@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "836656077067",
+    "firebase_url": "https://teste-362715-default-rtdb.firebaseio.com",
+    "project_id": "teste-362715",
+    "storage_bucket": "teste-362715.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836656077067:android:1d314042c4fd7c5dcfaa0e",
+        "android_client_info": {
+          "package_name": "com.example.statsy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSg48WRAqk1_zQ_CoFkSwCvh1Lyij5SSQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
