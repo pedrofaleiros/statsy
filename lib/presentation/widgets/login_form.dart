@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
 import 'package:statsy/presentation/widgets/google_signin_button.dart';
@@ -55,9 +56,10 @@ class _LoginFormState extends State<LoginForm> {
             const SizedBox(height: 16),
             _loginButton,
             const SizedBox(height: 8),
+            _divider,
+            const SizedBox(height: 8),
             const GoogleSignInButton(),
             const SizedBox(height: 16),
-            _divider,
             _gotoSignUp,
           ],
         ),

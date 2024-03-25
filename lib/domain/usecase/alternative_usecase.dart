@@ -22,19 +22,38 @@ class AlternativeUsecase {
   }
 
   Future<String?> save(AlternativeModel alternative) async {
-    if (alternative.text == "" || alternative.text.length > 128) {
-      return "Alternativa inválida";
-    }
+    alternative = replace(alternative);
 
-    final list = await this.list(alternative.questionId);
-    if (list.length >= 5) return "Questões devem ter no máximo 5 alternativas";
-    //TODO: validate isCorrect
+    if (alternative.text == "" || alternative.text.length > 256) {
+      return "Texto inválido";
+    }
 
     await _repository.save(alternative);
     return null;
   }
 
+  AlternativeModel replace(AlternativeModel alternative) {
+    alternative = alternative.copyWith(
+      text: alternative.text.replaceAll('\n', ''),
+    );
+    alternative = alternative.copyWith(
+      text: alternative.text.replaceAll('\r', ''),
+    );
+    alternative = alternative.copyWith(
+      text: alternative.text.replaceAll('  ', ''),
+    );
+    return alternative;
+  }
+
   Future<void> delete(String id) async {
     await _repository.delete(id);
+  }
+
+  Future<AlternativeModel?> detail(String id) async {
+    final data = await _repository.detail(id);
+    if (data.data() != null) {
+      return AlternativeModel.fromMap(data.data()!, data.id);
+    }
+    return null;
   }
 }

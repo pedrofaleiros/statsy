@@ -26,6 +26,26 @@ class LessonRepositoryImpl implements LessonRepository {
   }
 
   @override
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamLessonsByLevel(
+    int level,
+  ) {
+    return db
+        .collection(FireConst.LESSON)
+        .where('level', isEqualTo: level)
+        .snapshots();
+  }
+
+  @override
+  Future<QuerySnapshot<Map<String, dynamic>>> listLessonsByLevel(
+    int level,
+  ) async {
+    return await db
+        .collection(FireConst.LESSON)
+        .where('level', isEqualTo: level)
+        .get();
+  }
+
+  @override
   Future<void> save(LessonModel lesson) async {
     final ref = db.collection(FireConst.LESSON).doc(lesson.id);
     await ref.set(lesson.toMap());

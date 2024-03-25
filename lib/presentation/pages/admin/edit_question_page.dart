@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
 import 'package:statsy/domain/models/question_model.dart';
@@ -29,6 +28,17 @@ class _EditLessoQuestiontate extends State<EditQuestionPage> {
     question = ModalRoute.of(context)!.settings.arguments as QuestionModel;
   }
 
+  Future<void> _deleteQuestion() async {
+    final viewmodel = context.read<QuestionViewmodel>();
+
+    viewmodel.onSuccess = () {
+      showMessageSnackBar(context: context, message: 'Deletado com sucesso');
+      Navigator.pop(context);
+    };
+
+    await viewmodel.delete(question.id);
+  }
+
   Future<void> _saveQuestion() async {
     final viewmodel = context.read<QuestionViewmodel>();
 
@@ -38,7 +48,7 @@ class _EditLessoQuestiontate extends State<EditQuestionPage> {
         );
     viewmodel.onSuccess = () {
       showMessageSnackBar(context: context, message: 'Salvo com sucesso');
-      Navigator.pop(context);
+      // Navigator.pop(context);
     };
 
     await viewmodel.saveQuestion(question);
@@ -56,7 +66,10 @@ class _EditLessoQuestiontate extends State<EditQuestionPage> {
         foregroundColor: AppColors.white,
         title: const Text('Editar questão'),
         centerTitle: true,
-        actions: [_saveButton()],
+        actions: [
+          _saveButton(),
+          _deleteButton(),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(4.0),
@@ -77,17 +90,25 @@ class _EditLessoQuestiontate extends State<EditQuestionPage> {
     );
   }
 
+  Widget _deleteButton() {
+    return IconButton(
+      onPressed: _deleteQuestion,
+      icon: const Icon(Icons.delete),
+    );
+  }
+
   Widget _pageCard() {
     return Card(
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: TextField(
+          maxLines: 5,
           textInputAction: TextInputAction.done,
           onChanged: (value) => question = question.copyWith(content: value),
           controller: contentController,
           decoration: const InputDecoration(
-            hintText: "Nome",
+            hintText: "Conteúdo",
             border: InputBorder.none,
           ),
         ),
@@ -145,7 +166,7 @@ class AddAlternativeButton extends StatelessWidget {
   Future<void> _addAlt(BuildContext context) async {
     final newAlt = AlternativeModel(
       id: const Uuid().v4(),
-      text: "Texto",
+      text: "0",
       isCorrect: false,
       questionId: questionId,
     );

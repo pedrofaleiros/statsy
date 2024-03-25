@@ -3,12 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
 import 'package:statsy/presentation/pages/admin/edit_lesson_page.dart';
 import 'package:statsy/presentation/viewmodel/lesson_viewmodel.dart';
-import 'package:statsy/presentation/widgets/lesson_list_tile.dart';
+import 'package:statsy/presentation/widgets/admin/edit_lesson_list_tile.dart';
 import 'package:statsy/utils/app_colors.dart';
 import 'package:statsy/utils/is_admin.dart';
 
-class LessonsPage extends StatelessWidget {
-  const LessonsPage({super.key});
+class EditLessonsPage extends StatelessWidget {
+  const EditLessonsPage({super.key});
+
+  static const routeName = "/edit-lessons";
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class LessonsPage extends StatelessWidget {
         // backgroundColor: AppColors.orange,
         foregroundColor: AppColors.orange,
         title: const Text(
-          'Lições',
+          'Editar Lições',
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: [
@@ -52,7 +54,7 @@ class LessonsPage extends StatelessWidget {
   Widget _lessonsListView(List<LessonModel> lessons) {
     return Column(
       children: [
-        ...lessons.map((e) => LessonListTile(lesson: e)),
+        ...lessons.map((e) => EditLessonListTile(lesson: e)),
       ],
     );
   }

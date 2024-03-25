@@ -9,4 +9,6 @@ abstract class AlternativeRepository {
   Future<void> save(AlternativeModel alternative);
 
   Future<void> delete(String id);
+
+  Future<DocumentSnapshot<Map<String, dynamic>>> detail(String id);
 }

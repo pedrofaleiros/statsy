@@ -6,6 +6,10 @@ abstract class LessonRepository {
 
   Future<QuerySnapshot<Map<String, dynamic>>> listLessons();
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamLessonsByLevel(int level);
+
+  Future<QuerySnapshot<Map<String, dynamic>>> listLessonsByLevel(int level);
+
   Future<void> save(LessonModel lesson);
 
   Future<void> delete(String id);

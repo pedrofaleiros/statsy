@@ -4,4 +4,5 @@ class FireConst {
   static String get LESSON => "lesson";
   static String get QUESTION => "question";
   static String get ALTERNATIVE => "alternative";
+  static String get ANSWER => "answer";
 }

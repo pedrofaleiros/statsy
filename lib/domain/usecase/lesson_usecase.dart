@@ -1,5 +1,7 @@
 import 'package:statsy/domain/models/lesson_model.dart';
 import 'package:statsy/domain/repository/lesson_repository.dart';
+import 'package:statsy/domain/usecase/question_usecase.dart';
+import 'package:statsy/utils/service_locator.dart';
 
 class LessonUsecase {
   final LessonRepository _repository;
@@ -21,6 +23,21 @@ class LessonUsecase {
         .toList();
   }
 
+  Stream<List<LessonModel>> streamLessonsByLevel(int level) {
+    return _repository.streamLessonsByLevel(level).map(
+          (snapshot) => snapshot.docs
+              .map((e) => LessonModel.fromMap(e.data(), e.id))
+              .toList(),
+        );
+  }
+
+  Future<List<LessonModel>> listLessonsByLevel(int level) async {
+    final data = await _repository.listLessonsByLevel(level);
+    return data.docs
+        .map((doc) => LessonModel.fromMap(doc.data(), doc.id))
+        .toList();
+  }
+
   Future<String?> saveLesson(LessonModel lesson) async {
     if (lesson.name == "" || lesson.name.length > 32) return "Nome inválido";
     if (lesson.points <= 0 || lesson.points > 1000) return "Pontos inválidos";
@@ -33,6 +50,11 @@ class LessonUsecase {
   }
 
   Future<void> delete(String id) async {
+    final questionUsecase = locator<QuestionUsecase>();
+    final questions = await questionUsecase.list(id);
+    for (var q in questions) {
+      await questionUsecase.delete(q.id);
+    }
     await _repository.delete(id);
   }
 }

@@ -28,12 +28,10 @@ class GoogleSignInButton extends StatelessWidget {
       width: double.infinity,
       child: Consumer<AuthViewmodel>(builder: (context, viewmodel, _) {
         return Card(
-          elevation: 8,
+          elevation: 4,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           margin: const EdgeInsets.all(0),
-          color: viewmodel.isLoading
-              ? AppColors.white.withOpacity(0.5)
-              : AppColors.white,
+          color: AppColors.white,
           child: TextButton.icon(
             onPressed:
                 viewmodel.isLoading ? null : () async => await _signIn(context),

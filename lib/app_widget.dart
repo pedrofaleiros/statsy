@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/pages/admin/edit_lesson_page.dart';
 import 'package:statsy/presentation/pages/admin/edit_question_page.dart';
+import 'package:statsy/presentation/pages/admin/edit_lessons_page.dart';
 import 'package:statsy/presentation/pages/splash_page.dart';
 import 'package:statsy/presentation/viewmodel/alternative_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
@@ -28,12 +29,17 @@ class AppWidget extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(),
         darkTheme: ThemeData.dark(),
-        routes: {
-          SplashPage.routeName: (_) => const SplashPage(),
-          EditLessonPage.routeName: (_) => const EditLessonPage(),
-          EditQuestionPage.routeName: (_) => const EditQuestionPage(),
-        },
+        routes: _routes,
       ),
     );
+  }
+
+  Map<String, WidgetBuilder> get _routes {
+    return {
+      SplashPage.routeName: (_) => const SplashPage(),
+      EditLessonPage.routeName: (_) => const EditLessonPage(),
+      EditQuestionPage.routeName: (_) => const EditQuestionPage(),
+      EditLessonsPage.routeName: (_) => const EditLessonsPage(),
+    };
   }
 }

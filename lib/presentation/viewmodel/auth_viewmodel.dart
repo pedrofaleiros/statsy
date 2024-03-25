@@ -24,6 +24,7 @@ class AuthViewmodel extends ChangeNotifier {
     if (credential != null) {
       try {
         await FirebaseAuth.instance.signInWithCredential(credential);
+        onSuccess?.call();
       } on FirebaseAuthException catch (e) {
         _handleGoogleAuthException(e);
       }

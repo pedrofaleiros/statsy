@@ -35,4 +35,10 @@ class AlternativeRepositoryImpl implements AlternativeRepository {
     final ref = db.collection(FireConst.ALTERNATIVE).doc(id);
     await ref.delete();
   }
+
+  @override
+  Future<DocumentSnapshot<Map<String, dynamic>>> detail(String id) async {
+    final ref = db.collection(FireConst.ALTERNATIVE).doc(id);
+    return ref.get();
+  }
 }

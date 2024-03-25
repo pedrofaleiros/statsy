@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:statsy/presentation/pages/lessons_page.dart';
 import 'package:statsy/presentation/pages/profile_page.dart';
 import 'package:statsy/utils/app_colors.dart';
 
@@ -13,10 +12,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _index = 0;
+  int _index = 3;
 
   final tabs = [
-    const LessonsPage(),
+    Placeholder(),
     Placeholder(),
     Placeholder(),
     const ProfilePage(),

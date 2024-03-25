@@ -22,6 +22,11 @@ class QuestionViewmodel {
     }
   }
 
+  Future<void> delete(String id) async {
+    await _usecase.delete(id);
+    onSuccess?.call();
+  }
+
   Function()? onSuccess;
   Function(String message)? onError;
 }

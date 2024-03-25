@@ -4,8 +4,8 @@ import 'package:statsy/presentation/pages/admin/edit_lesson_page.dart';
 import 'package:statsy/utils/app_colors.dart';
 import 'package:statsy/utils/is_admin.dart';
 
-class LessonListTile extends StatelessWidget {
-  const LessonListTile({
+class EditLessonListTile extends StatelessWidget {
+  const EditLessonListTile({
     super.key,
     required this.lesson,
   });
@@ -15,15 +15,6 @@ class LessonListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onLongPress: () {
-        if (isAdmin()) {
-          Navigator.pushNamed(
-            context,
-            EditLessonPage.routeName,
-            arguments: lesson,
-          );
-        }
-      },
       leading: Card(
         color: getLevelColor(lesson.level),
         child: const Padding(
@@ -37,8 +28,16 @@ class LessonListTile extends StatelessWidget {
       title: Text(lesson.name),
       subtitle: Text(lesson.description),
       trailing: IconButton(
-        onPressed: () {},
-        icon: const Icon(Icons.play_arrow),
+        onPressed: () {
+          if (isAdmin()) {
+            Navigator.pushNamed(
+              context,
+              EditLessonPage.routeName,
+              arguments: lesson,
+            );
+          }
+        },
+        icon: const Icon(Icons.edit),
       ),
     );
   }

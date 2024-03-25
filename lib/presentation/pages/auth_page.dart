@@ -2,11 +2,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
+import 'package:statsy/presentation/widgets/google_signin_button.dart';
 import 'package:statsy/presentation/widgets/login_form.dart';
-import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
 import 'package:statsy/presentation/widgets/signup_form.dart';
 import 'package:statsy/utils/app_colors.dart';
 
@@ -26,14 +25,60 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: PageView(
-          controller: _pageController,
+        child: Stack(
           children: [
-            LoginForm(pageController: _pageController),
-            SignUpForm(pageController: _pageController),
+            PageView(
+              controller: _pageController,
+              children: [
+                LoginForm(pageController: _pageController),
+                SignUpForm(pageController: _pageController),
+              ],
+            ),
+            LoadingStackWidget(),
+            // _googleButton,
           ],
         ),
       ),
     );
+  }
+
+  Widget get _googleButton {
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 32,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 32),
+        child: GoogleSignInButton(),
+      ),
+    );
+  }
+}
+
+class LoadingStackWidget extends StatelessWidget {
+  const LoadingStackWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AuthViewmodel>(builder: (context, viewmodel, _) {
+      return viewmodel.isLoading
+          ? Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: AppColors.black.withOpacity(0.5),
+              child: Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.white,
+                ),
+              ),
+            )
+          : Container(
+              color: AppColors.red,
+              width: 0,
+              height: 0,
+            );
+    });
   }
 }

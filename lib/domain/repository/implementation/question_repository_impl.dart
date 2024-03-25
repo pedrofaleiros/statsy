@@ -30,4 +30,16 @@ class QuestionRepositoryImpl implements QuestionRepository {
     final ref = db.collection(FireConst.QUESTION).doc(question.id);
     await ref.set(question.toMap());
   }
+
+  @override
+  Future<void> delete(String id) async {
+    final ref = db.collection(FireConst.QUESTION).doc(id);
+    await ref.delete();
+  }
+
+  @override
+  Future<DocumentSnapshot<Map<String, dynamic>>> detail(String id) async {
+    final ref = db.collection(FireConst.QUESTION).doc(id);
+    return ref.get();
+  }
 }

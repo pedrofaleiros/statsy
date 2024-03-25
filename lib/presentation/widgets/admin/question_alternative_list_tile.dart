@@ -64,6 +64,9 @@ class _QuestionAlternativeListTileState
       direction: DismissDirection.endToStart,
       child: ListTile(
         title: TextField(
+          textInputAction: TextInputAction.done,
+          onSubmitted: (_) async => await _save(context),
+          maxLines: 2,
           controller: controller,
           decoration: const InputDecoration(border: InputBorder.none),
         ),
