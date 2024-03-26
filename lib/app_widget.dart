@@ -42,8 +42,10 @@ class AppWidget extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(),
-        darkTheme: ThemeData.dark(),
+        theme: ThemeData(fontFamily: "Roboto"),
+        darkTheme: ThemeData.dark().copyWith(
+          textTheme: Typography().white.apply(fontFamily: "Roboto"),
+        ),
         routes: _routes,
       ),
     );

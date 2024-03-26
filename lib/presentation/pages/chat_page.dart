@@ -1,5 +1,4 @@
 import 'package:flare_flutter/flare_actor.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/message_model.dart';
@@ -45,6 +44,7 @@ class _ChatPageState extends State<ChatPage> {
             children: [
               _messagesList(context),
               // const Divider(height: 16, thickness: 2),
+              Container(height: 16),
               _textField(),
             ],
           ),
@@ -59,8 +59,8 @@ class _ChatPageState extends State<ChatPage> {
         border: Border.all(color: AppColors.green),
         borderRadius: BorderRadius.circular(32),
       ),
-      margin: const EdgeInsets.only(top: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      // margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(left: 16),
       child: TextField(
         onSubmitted: (value) async => await _send(),
         controller: controller,

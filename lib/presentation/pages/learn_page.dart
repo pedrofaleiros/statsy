@@ -16,10 +16,13 @@ class LearnPage extends StatelessWidget {
         title: const Text("Aprender"),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _lessonsCard(),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              _lessonsCard(),
+            ],
+          ),
         ),
       ),
     );
