@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/pages/admin/edit_lesson_page.dart';
 import 'package:statsy/presentation/pages/admin/edit_question_page.dart';
 import 'package:statsy/presentation/pages/admin/edit_lessons_page.dart';
+import 'package:statsy/presentation/pages/answer_lesson_page.dart';
+import 'package:statsy/presentation/pages/lessons_page.dart';
 import 'package:statsy/presentation/pages/splash_page.dart';
 import 'package:statsy/presentation/viewmodel/alternative_viewmodel.dart';
+import 'package:statsy/presentation/viewmodel/answer_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
+import 'package:statsy/presentation/viewmodel/chat_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/lesson_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/question_viewmodel.dart';
 
@@ -16,11 +21,21 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider<ChatViewmodel>(
+          create: (context) => ChatViewmodel(),
+        ),
         ChangeNotifierProvider<AuthViewmodel>(
           create: (context) => AuthViewmodel(),
         ),
-        Provider<LessonViewmodel>(create: (context) => LessonViewmodel()),
-        Provider<QuestionViewmodel>(create: (context) => QuestionViewmodel()),
+        ChangeNotifierProvider<AnswerViewmodel>(
+          create: (context) => AnswerViewmodel(),
+        ),
+        Provider<LessonViewmodel>(
+          create: (context) => LessonViewmodel(),
+        ),
+        Provider<QuestionViewmodel>(
+          create: (context) => QuestionViewmodel(),
+        ),
         Provider<AlternativeViewmodel>(
           create: (context) => AlternativeViewmodel(),
         ),
@@ -40,6 +55,8 @@ class AppWidget extends StatelessWidget {
       EditLessonPage.routeName: (_) => const EditLessonPage(),
       EditQuestionPage.routeName: (_) => const EditQuestionPage(),
       EditLessonsPage.routeName: (_) => const EditLessonsPage(),
+      LessonsPage.routeName: (_) => const LessonsPage(),
+      AnswerLessonPage.routeName: (_) => const AnswerLessonPage(),
     };
   }
 }

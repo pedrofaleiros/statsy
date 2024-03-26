@@ -11,6 +11,13 @@ class LessonViewmodel {
     return await _usecase.listLessons();
   }
 
+  Stream<List<LessonModel>> streamLessonByLevel(int level) =>
+      _usecase.streamLessonsByLevel(level);
+
+  Future<List<LessonModel>> listLessonsByLevel(int level) async {
+    return await _usecase.listLessonsByLevel(level);
+  }
+
   Future<void> saveLesson(LessonModel lesson) async {
     final res = await _usecase.saveLesson(lesson);
     if (res == null) {

@@ -8,6 +8,10 @@ class AppColors {
   static const green = CupertinoColors.systemGreen;
   static const pink = CupertinoColors.systemPink;
 
+  static const mint = CupertinoColors.systemMint;
+  static const purple = CupertinoColors.systemPurple;
+  static const cyan = CupertinoColors.systemCyan;
+
   static const grey = CupertinoColors.systemGrey;
   static const grey2 = CupertinoColors.systemGrey2;
   static const grey3 = CupertinoColors.systemGrey3;

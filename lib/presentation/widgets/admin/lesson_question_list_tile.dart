@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:statsy/domain/models/question_model.dart';
 import 'package:statsy/presentation/pages/admin/edit_question_page.dart';
-import 'package:statsy/utils/app_colors.dart';
 
 class LessonQuestionListTile extends StatelessWidget {
   const LessonQuestionListTile({

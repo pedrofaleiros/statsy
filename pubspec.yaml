@@ -21,6 +21,10 @@ dependencies:
   google_sign_in: ^6.2.1
   font_awesome_flutter: ^10.7.0
   flutter_svg: ^2.0.10+1
+  flutter_dotenv: ^5.1.0
+  google_generative_ai: ^0.2.2
+  flutter_markdown: ^0.6.22
+  flare_flutter: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -33,6 +37,8 @@ flutter:
 
   assets:
     - assets/images/google_icon.svg
+    - .env
+    - assets/animations/ia.flr
 
   fonts:
     - family: Roboto

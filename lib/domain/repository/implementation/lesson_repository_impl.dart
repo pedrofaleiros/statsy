@@ -32,6 +32,7 @@ class LessonRepositoryImpl implements LessonRepository {
     return db
         .collection(FireConst.LESSON)
         .where('level', isEqualTo: level)
+        .orderBy('__name__')
         .snapshots();
   }
 
@@ -42,6 +43,7 @@ class LessonRepositoryImpl implements LessonRepository {
     return await db
         .collection(FireConst.LESSON)
         .where('level', isEqualTo: level)
+        .orderBy('__name__')
         .get();
   }
 

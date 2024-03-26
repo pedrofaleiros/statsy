@@ -12,38 +12,42 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.blue,
+        foregroundColor: AppColors.black,
         title: const Text('Perfil'),
         leading: const Icon(Icons.person),
         actions: [
-          IconButton(
-            onPressed: () async => await context.read<AuthViewmodel>().logout(),
-            icon: const Icon(Icons.logout),
-          )
+          if (isAdmin()) _editLessons(context),
         ],
       ),
       body: Column(
         children: [
-          if (isAdmin()) _editLessons(context),
+          Expanded(child: Container()),
+          _logout(context),
+          const SizedBox(height: 16),
         ],
       ),
     );
   }
 
-  Widget _editLessons(BuildContext context) => ListTile(
-        title: const Text("Editar Lições"),
-        trailing: IconButton(
-          onPressed: () =>
-              Navigator.pushNamed(context, EditLessonsPage.routeName),
-          icon: const Icon(Icons.arrow_forward_ios),
-        ),
-        leading: const Card(
-          color: AppColors.blue,
-          child: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(
-              Icons.edit,
-              color: AppColors.white,
-            ),
+  Widget _editLessons(BuildContext context) {
+    return IconButton(
+      onPressed: () => Navigator.pushNamed(context, EditLessonsPage.routeName),
+      icon: const Icon(Icons.edit),
+    );
+  }
+
+  Widget _logout(BuildContext context) => Card(
+        margin: const EdgeInsets.all(8),
+        child: ListTile(
+          onTap: () async {
+            await context.read<AuthViewmodel>().logout();
+          },
+          title: const Text("Sair"),
+          trailing: const Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 14,
+            color: AppColors.grey,
           ),
         ),
       );
