@@ -1,32 +1,29 @@
-// ignore_for_file: prefer_final_fields
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:statsy/domain/models/message_model.dart';
+import 'package:statsy/domain/models/chat_model.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatViewmodel extends ChangeNotifier {
-  List<MessageModel> _messages = [];
-  List<MessageModel> get messages => _messages.reversed.toList();
+  final String modelName = 'gemini-pro';
+  final String apiKey = dotenv.env['GEMINI_API_KEY'] ?? "";
 
-  void _addMessage({required String content, required Role role}) {
+  final List<ChatModel> _messages = [];
+  bool isLoading = false;
+
+  List<ChatModel> get messages => _messages.reversed.toList();
+
+  void _addMessage({required String userText, String? chatText}) {
     _messages.add(
-      MessageModel(
-        id: _messages.length.toString(),
-        role: role,
-        content: content,
-      ),
+      ChatModel(id: const Uuid().v4(), userText: userText, chatText: chatText),
     );
     notifyListeners();
   }
 
-  bool isLoading = false;
   void _setIsLoading(bool value) {
     isLoading = value;
     notifyListeners();
   }
-
-  final String apiKey = dotenv.env['GEMINI_API_KEY'] ?? "";
 
   Future<void> ask(String prompt) async {
     if (prompt == "" || apiKey == "") {
@@ -35,11 +32,11 @@ class ChatViewmodel extends ChangeNotifier {
     GenerateContentResponse? response;
     try {
       _setIsLoading(true);
-      final history = _getHistory();
+      final history = _history;
 
-      _addMessage(role: Role.user, content: prompt);
+      _addMessage(userText: prompt);
 
-      final model = GenerativeModel(model: 'gemini-pro', apiKey: apiKey);
+      final model = GenerativeModel(model: modelName, apiKey: apiKey);
       final chat = model.startChat(history: history);
       response = await chat.sendMessage(Content.text(prompt));
     } catch (e) {
@@ -48,54 +45,27 @@ class ChatViewmodel extends ChangeNotifier {
       notifyListeners();
     } finally {
       if (response != null) {
-        _addMessage(
-          role: Role.chat,
-          content: response.text ?? "Erro",
-        );
+        _messages[_messages.length - 1] =
+            _messages[_messages.length - 1].copyWith(chatText: response.text);
       }
       _setIsLoading(false);
     }
     _setIsLoading(false);
   }
 
-  Function(String? message)? onError;
-
-  List<Content> _getHistory() {
+  List<Content> get _history {
     List<Content> list = [];
-    if (messages.length % 2 != 0) return [];
-    for (int i = 0; i < _messages.length; i++) {
-      if (_messages[i].role == Role.user) {
-        list.add(Content.text(_messages[i].content));
-      } else {
-        list.add(Content.model([TextPart(_messages[i].content)]));
+    for (var mes in _messages) {
+      if (mes.isValid) {
+        list.add(Content.text(mes.userText));
+        list.add(Content.model([TextPart(mes.chatText!)]));
       }
     }
     return list;
   }
 
-  // final String modelConfig =
-  //     "Responda sempre em pt-BR. Você é um expert em Probabilidade e Estatistica, e deve responder perguntas, dar explicações e auxiliar alunos, de forma resumida e didatica. Responda apenas questões relacionadas com probabilidade e estatistica, e algumas disciplinas relacionadas,como matematica por exemplo.";
+  Function(String? message)? onError;
 }
 
-/* 
-MessageModel(
-      id: "0",
-      role: Role.chat,
-      content: "Olá, sou o Chat IA.",
-    ),
-    MessageModel(
-      id: "1",
-      role: Role.user,
-      content: "Olá chat.",
-    ),
-    MessageModel(
-      id: "2",
-      role: Role.user,
-      content: "Qual o maior time do brasil?",
-    ),
-    MessageModel(
-      id: "3",
-      role: Role.chat,
-      content: "O maior time do brasil é o Flamengo.",
-    ),
- */
+// const String modelConfig =
+//     "Responda sempre em pt-BR. Você é um expert em Probabilidade e Estatistica, e deve responder perguntas, dar explicações e auxiliar alunos, de forma resumida e didatica. Responda apenas questões relacionadas com probabilidade e estatistica, e algumas disciplinas relacionadas,como matematica por exemplo.";

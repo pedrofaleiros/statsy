@@ -42,9 +42,9 @@ class AppWidget extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: "Roboto"),
+        theme: ThemeData(fontFamily: "OpenSans"),
         darkTheme: ThemeData.dark().copyWith(
-          textTheme: Typography().white.apply(fontFamily: "Roboto"),
+          textTheme: Typography().white.apply(fontFamily: "OpenSans"),
         ),
         routes: _routes,
       ),

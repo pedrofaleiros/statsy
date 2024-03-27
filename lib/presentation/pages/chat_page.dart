@@ -1,6 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:statsy/domain/models/chat_model.dart';
 import 'package:statsy/domain/models/message_model.dart';
 import 'package:statsy/presentation/viewmodel/chat_viewmodel.dart';
 import 'package:statsy/presentation/widgets/chat_message.dart';
@@ -83,7 +84,6 @@ class _ChatPageState extends State<ChatPage> {
       child: ListView(
         reverse: true,
         children: [
-          if (context.watch<ChatViewmodel>().isLoading) _loading(),
           ...context.watch<ChatViewmodel>().messages.map(
                 (e) => MessageCard(message: e),
               ),
@@ -94,9 +94,9 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _loading() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 8),
       width: double.infinity,
-      child: Center(
+      child: const Center(
         child: SizedBox(
           height: 96,
           width: 96,
@@ -116,12 +116,15 @@ class MessageCard extends StatelessWidget {
     required this.message,
   });
 
-  final MessageModel message;
+  final ChatModel message;
 
   @override
   Widget build(BuildContext context) {
-    return message.role == Role.chat
-        ? ChatMessage(content: message.content)
-        : UserMessage(content: message.content);
+    return Column(
+      children: [
+        UserMessage(content: message.userText),
+        ChatMessage(content: message.chatText),
+      ],
+    );
   }
 }

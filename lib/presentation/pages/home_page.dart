@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:statsy/presentation/pages/chat_page.dart';
 import 'package:statsy/presentation/pages/learn_page.dart';
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
 
   final colors = [
     AppColors.orange,
-    AppColors.green,
+    AppColors.cyan,
     AppColors.red,
     AppColors.blue,
   ];
@@ -36,7 +37,14 @@ class _HomePageState extends State<HomePage> {
       label: "Aprender",
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.chat),
+      // icon: Icon(Icons.chat),
+      icon: SizedBox(
+        height: 32,
+        width: 32,
+        child: FlareActor(
+          'assets/animations/ia.flr',
+        ),
+      ),
       label: "Chat",
     ),
     BottomNavigationBarItem(
@@ -53,6 +61,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: true,
         selectedFontSize: 12,
