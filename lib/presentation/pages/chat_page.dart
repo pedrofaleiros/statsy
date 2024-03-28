@@ -1,7 +1,12 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/chat_model.dart';
 import 'package:statsy/presentation/viewmodel/chat_viewmodel.dart';
+import 'package:statsy/presentation/widgets/aura_widget.dart';
 import 'package:statsy/presentation/widgets/chat_message.dart';
 import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
 import 'package:statsy/presentation/widgets/user_message.dart';
@@ -68,7 +73,8 @@ class _ChatPageState extends State<ChatPage> {
         controller: controller,
         decoration: InputDecoration(
           suffixIcon: IconButton(
-            onPressed: context.watch<ChatViewmodel>().isLoading
+            onPressed: context.watch<ChatViewmodel>().isLoading ||
+                    context.watch<ChatViewmodel>().isTipping
                 ? null
                 : () async => await _send(),
             icon: const Icon(Icons.send),
@@ -82,13 +88,52 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _messagesList(BuildContext context) {
     return Expanded(
-      child: ListView(
-        reverse: true,
-        children: [
-          ...context.watch<ChatViewmodel>().messages.map(
-                (e) => MessageCard(message: e),
+      child: context.watch<ChatViewmodel>().messages.isEmpty
+          ? _emptyMessages()
+          : ListView.builder(
+              reverse: true,
+              itemCount: context.watch<ChatViewmodel>().messages.length,
+              itemBuilder: (context, index) => MessageCard(
+                message: context.watch<ChatViewmodel>().messages[index],
               ),
-        ],
+            ),
+    );
+  }
+
+  Widget _emptyMessages() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AuraWidget(size: 128),
+        SizedBox(height: 16),
+        Text(
+          'Como posso te ajudar?',
+          style: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: 16),
+        Expanded(
+          child: ListView(
+            children: [
+              _hintItem("Me explique permutação."),
+              _hintItem("O que é arranjo simples e composto?"),
+              _hintItem("Qual a diferença de combinação e permutação?"),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _hintItem(String text) {
+    return Card(
+      child: ListTile(
+        title: Text(text),
+        onTap: () async {
+          await context.read<ChatViewmodel>().ask(text);
+        },
       ),
     );
   }

@@ -10,6 +10,7 @@ class ChatViewmodel extends ChangeNotifier {
 
   final List<ChatModel> _messages = [];
   bool isLoading = false;
+  bool isTipping = false;
 
   List<ChatModel> get messages => _messages.reversed.toList();
 
@@ -25,7 +26,12 @@ class ChatViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> ask(String prompt) async {
+  void _setIsTipping(bool value) {
+    isTipping = value;
+    notifyListeners();
+  }
+
+  Future<void> ask2(String prompt) async {
     if (prompt == "" || apiKey == "") {
       return;
     }
@@ -51,6 +57,39 @@ class ChatViewmodel extends ChangeNotifier {
       _setIsLoading(false);
     }
     _setIsLoading(false);
+  }
+
+  Future<void> ask(String prompt) async {
+    if (prompt == "" || apiKey == "") {
+      return;
+    }
+    try {
+      _setIsLoading(true);
+      final history = _history;
+
+      _addMessage(userText: prompt);
+
+      final model = GenerativeModel(model: modelName, apiKey: apiKey);
+      final chat = model.startChat(history: history);
+      final response = chat.sendMessageStream(Content.text(prompt));
+
+      _setIsLoading(false);
+      _setIsTipping(true);
+      await for (final chunk in response) {
+        if (chunk.text != null) {
+          _messages.last = _messages.last.copyWith(
+              chatText: (_messages.last.chatText ?? "") + chunk.text!);
+          notifyListeners();
+        }
+      }
+      _setIsTipping(false);
+    } catch (e) {
+      onError?.call("Erro, tente novamente.");
+      _messages.removeLast();
+      notifyListeners();
+    } finally {
+      _setIsLoading(false);
+    }
   }
 
   List<Content> get _history {
