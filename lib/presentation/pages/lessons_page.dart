@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
 import 'package:statsy/presentation/viewmodel/lesson_viewmodel.dart';
 import 'package:statsy/presentation/widgets/lesson_list_tile.dart';
-import 'package:statsy/utils/app_colors.dart';
 
 class LessonsPage extends StatelessWidget {
   const LessonsPage({super.key});
@@ -19,17 +17,20 @@ class LessonsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(),
-      body: StreamBuilder(
-        stream: context.read<LessonViewmodel>().streamLessonByLevel(level),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              !snapshot.hasData) {
-            return _loading;
-          }
-
-          final lessons = snapshot.data!;
-          return _list(lessons);
-        },
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: StreamBuilder(
+            stream: context.read<LessonViewmodel>().streamLessonByLevel(level),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting ||
+                  !snapshot.hasData) {
+                return _loading;
+              }
+              final lessons = snapshot.data!;
+              return _list(lessons);
+            },
+          ),
+        ),
       ),
     );
   }

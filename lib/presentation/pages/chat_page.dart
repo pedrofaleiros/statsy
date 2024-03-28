@@ -1,8 +1,6 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/chat_model.dart';
-import 'package:statsy/domain/models/message_model.dart';
 import 'package:statsy/presentation/viewmodel/chat_viewmodel.dart';
 import 'package:statsy/presentation/widgets/chat_message.dart';
 import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
@@ -88,23 +86,6 @@ class _ChatPageState extends State<ChatPage> {
                 (e) => MessageCard(message: e),
               ),
         ],
-      ),
-    );
-  }
-
-  Widget _loading() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      width: double.infinity,
-      child: const Center(
-        child: SizedBox(
-          height: 96,
-          width: 96,
-          child: FlareActor(
-            'assets/animations/ia.flr',
-            animation: "Aura",
-          ),
-        ),
       ),
     );
   }

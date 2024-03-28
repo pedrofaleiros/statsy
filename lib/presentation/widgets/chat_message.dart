@@ -1,6 +1,6 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:statsy/presentation/widgets/aura_widget.dart';
 
 class ChatMessage extends StatelessWidget {
   const ChatMessage({super.key, required this.content});
@@ -28,14 +28,7 @@ class ChatMessage extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       width: double.infinity,
       child: const Center(
-        child: SizedBox(
-          height: 96,
-          width: 96,
-          child: FlareActor(
-            'assets/animations/ia.flr',
-            animation: "Aura",
-          ),
-        ),
+        child: AuraWidget(size: 96),
       ),
     );
   }

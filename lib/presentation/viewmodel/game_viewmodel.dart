@@ -8,8 +8,29 @@ class GameViewmodel extends ChangeNotifier {
 
   List<QuestionModel> questions = [];
 
-  Future<void> getQuestions(String lessonId) async {
-    questions = await _questionUsecase.list(lessonId);
-    notifyListeners();
+  int total = 0;
+
+  Future<void> loadQuestions(String lessonId) async {
+    questions.clear();
+    total = 0;
+    try {
+      questions = await _questionUsecase.list(lessonId);
+      total = questions.length;
+      onSuccess?.call();
+    } catch (e) {
+      onError?.call("Erro ao iniciar lição.");
+    } finally {
+      notifyListeners();
+    }
   }
+
+  QuestionModel? pop() {
+    if (questions.isEmpty) {
+      return null;
+    }
+    return questions.removeLast();
+  }
+
+  Function()? onSuccess;
+  Function(String? message)? onError;
 }

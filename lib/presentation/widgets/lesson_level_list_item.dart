@@ -18,7 +18,7 @@ class LessonLevelListItem extends StatelessWidget {
         arguments: level,
       ),
       leading: Card(
-        color: getLevelColor(level).withOpacity(0.75),
+        color: getLevelColor(level),
         child: const Padding(
           padding: EdgeInsets.all(8.0),
           child: Icon(

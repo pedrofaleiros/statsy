@@ -1,10 +1,6 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
-import 'package:statsy/presentation/widgets/google_signin_button.dart';
 import 'package:statsy/presentation/widgets/login_form.dart';
 import 'package:statsy/presentation/widgets/signup_form.dart';
 import 'package:statsy/utils/app_colors.dart';
@@ -34,22 +30,10 @@ class _AuthPageState extends State<AuthPage> {
                 SignUpForm(pageController: _pageController),
               ],
             ),
-            LoadingStackWidget(),
+            const LoadingStackWidget(),
             // _googleButton,
           ],
         ),
-      ),
-    );
-  }
-
-  Widget get _googleButton {
-    return Positioned(
-      left: 0,
-      right: 0,
-      bottom: 32,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 32),
-        child: GoogleSignInButton(),
       ),
     );
   }
@@ -68,7 +52,7 @@ class LoadingStackWidget extends StatelessWidget {
               width: double.infinity,
               height: double.infinity,
               color: AppColors.black.withOpacity(0.5),
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(
                   color: AppColors.white,
                 ),

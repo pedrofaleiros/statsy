@@ -20,12 +20,14 @@ class ProfilePage extends StatelessWidget {
           if (isAdmin()) _editLessons(context),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(child: Container()),
-          _logout(context),
-          const SizedBox(height: 16),
-        ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(child: Container()),
+            _logout(context),
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
     );
   }

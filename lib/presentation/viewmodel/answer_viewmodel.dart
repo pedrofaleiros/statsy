@@ -1,12 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
 import 'package:statsy/domain/models/answer_model.dart';
 import 'package:statsy/domain/usecase/answer_usecase.dart';
 import 'package:statsy/utils/service_locator.dart';
 
-class AnswerViewmodel extends ChangeNotifier {
+class AnswerViewmodel {
   final _usecase = locator<AnswerUsecase>();
+
+  Future<void> testAnswer(AlternativeModel alt) async {
+    if (alt.isCorrect) {
+      onCorrect?.call();
+    } else {
+      onWrong?.call();
+    }
+  }
 
   Future<void> answer(AlternativeModel alt) async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
@@ -22,7 +29,6 @@ class AnswerViewmodel extends ChangeNotifier {
       onError?.call(res);
     } else {
       if (alt.isCorrect) {
-        onCorrect?.call();
         onCorrect?.call();
       } else {
         onWrong?.call();
