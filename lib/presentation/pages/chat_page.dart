@@ -55,20 +55,23 @@ class _ChatPageState extends State<ChatPage> {
   Widget _textField() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.green),
-        borderRadius: BorderRadius.circular(32),
+        border: Border.all(color: AppColors.grey, width: 1),
+        borderRadius: BorderRadius.circular(8),
       ),
       // margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.only(left: 16),
       child: TextField(
-        onSubmitted: (value) async => await _send(),
+        textInputAction: TextInputAction.newline,
+        // onSubmitted: (value) async => await _send(),
+        maxLines: 3,
+        keyboardType: TextInputType.multiline,
         controller: controller,
         decoration: InputDecoration(
-          suffixIcon: GestureDetector(
-            onTap: context.watch<ChatViewmodel>().isLoading
+          suffixIcon: IconButton(
+            onPressed: context.watch<ChatViewmodel>().isLoading
                 ? null
                 : () async => await _send(),
-            child: const Icon(Icons.send),
+            icon: const Icon(Icons.send),
           ),
           hintText: 'Faça sua pergunta...',
           border: InputBorder.none,

@@ -55,6 +55,8 @@ class ChatViewmodel extends ChangeNotifier {
 
   List<Content> get _history {
     List<Content> list = [];
+    list.add(Content.text(modelConfig));
+    list.add(Content.model([TextPart(modelConfigResponse)]));
     for (var mes in _messages) {
       if (mes.isValid) {
         list.add(Content.text(mes.userText));
@@ -67,5 +69,8 @@ class ChatViewmodel extends ChangeNotifier {
   Function(String? message)? onError;
 }
 
-// const String modelConfig =
-//     "Responda sempre em pt-BR. Você é um expert em Probabilidade e Estatistica, e deve responder perguntas, dar explicações e auxiliar alunos, de forma resumida e didatica. Responda apenas questões relacionadas com probabilidade e estatistica, e algumas disciplinas relacionadas,como matematica por exemplo.";
+const String modelConfig =
+    "Responda sempre em pt-BR. Você é um expert em Probabilidade e Estatistica, e deve responder perguntas, dar explicações e auxiliar alunos, de forma resumida e didatica. Responda apenas questões relacionadas com probabilidade e estatistica, e algumas disciplinas relacionadas, como matematica por exemplo, e se for perguntado se alguma outra disciplina, não responda e explique o que você pode fazer.";
+
+const String modelConfigResponse =
+    "Ok, vou responder perguntas, dar explicações e auxiliar alunos, de forma resumida e didatica.";

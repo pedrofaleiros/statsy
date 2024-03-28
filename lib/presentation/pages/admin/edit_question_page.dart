@@ -49,6 +49,7 @@ class _EditLessoQuestiontate extends State<EditQuestionPage> {
     viewmodel.onSuccess = () {
       showMessageSnackBar(context: context, message: 'Salvo com sucesso');
       // Navigator.pop(context);
+      // FocusScope.of(context).unfocus();
     };
 
     await viewmodel.saveQuestion(question);
@@ -73,11 +74,13 @@ class _EditLessoQuestiontate extends State<EditQuestionPage> {
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(4.0),
-        child: Column(
-          children: [
-            _pageCard(),
-            AlternativesListView(questionId: question.id)
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _pageCard(),
+              AlternativesListView(questionId: question.id)
+            ],
+          ),
         ),
       ),
     );
@@ -118,10 +121,7 @@ class _EditLessoQuestiontate extends State<EditQuestionPage> {
 }
 
 class AlternativesListView extends StatelessWidget {
-  const AlternativesListView({
-    super.key,
-    required this.questionId,
-  });
+  const AlternativesListView({super.key, required this.questionId});
 
   final String questionId;
 
@@ -136,37 +136,50 @@ class AlternativesListView extends StatelessWidget {
         }
 
         final alternatives = snapshot.data!;
-        return _altsListView(alternatives);
+        return _altsListView(context, alternatives);
       },
     );
   }
 
-  Widget _altsListView(List<AlternativeModel> alternatives) {
-    return Card(
-      elevation: 2,
-      child: Column(
-        children: [
-          ...alternatives
-              .map((e) => QuestionAlternativeListTile(alternative: e)),
-          AddAlternativeButton(questionId: questionId),
-        ],
+  Widget _altsListView(
+    BuildContext context,
+    List<AlternativeModel> alternatives,
+  ) {
+    return Column(
+      children: [
+        ...alternatives.map((e) => QuestionAlternativeListTile(alternative: e)),
+        _textField(context),
+        // AddAlternativeButton(questionId: questionId),
+        // _addAltButton(),
+      ],
+    );
+  }
+
+  Padding _textField(BuildContext context) {
+    final controller = TextEditingController();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        onEditingComplete: () async => await _addAlt(context, controller),
+        controller: controller,
+        decoration: InputDecoration(
+          suffixIcon: IconButton(
+            onPressed: () async => await _addAlt(context, controller),
+            icon: Icon(Icons.add),
+          ),
+          hintText: 'Text',
+        ),
       ),
     );
   }
-}
 
-class AddAlternativeButton extends StatelessWidget {
-  const AddAlternativeButton({
-    super.key,
-    required this.questionId,
-  });
-
-  final String questionId;
-
-  Future<void> _addAlt(BuildContext context) async {
+  Future<void> _addAlt(
+    BuildContext context,
+    TextEditingController controller,
+  ) async {
     final newAlt = AlternativeModel(
       id: const Uuid().v4(),
-      text: "0",
+      text: controller.text,
       isCorrect: false,
       questionId: questionId,
     );
@@ -176,17 +189,11 @@ class AddAlternativeButton extends StatelessWidget {
       showMessageSnackBar(context: context, message: message);
     };
 
-    await viewmodel.save(newAlt);
-  }
+    viewmodel.onSuccess = () {
+      controller.clear();
+      FocusScope.of(context).unfocus();
+    };
 
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: TextButton(
-        onPressed: () async => await _addAlt(context),
-        child: const Text("Adicionar alternativa"),
-      ),
-    );
+    await viewmodel.save(newAlt);
   }
 }

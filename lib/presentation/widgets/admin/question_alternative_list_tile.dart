@@ -57,28 +57,29 @@ class _QuestionAlternativeListTileState
   Widget build(BuildContext context) {
     controller.text = widget.alternative.text;
 
-    return Dismissible(
-      background: _background(),
-      key: Key(widget.alternative.id),
-      onDismissed: (_) async => await _delete(context),
-      direction: DismissDirection.endToStart,
-      child: ListTile(
-        title: TextField(
-          textInputAction: TextInputAction.done,
-          onSubmitted: (_) async => await _save(context),
-          maxLines: 2,
-          controller: controller,
-          decoration: const InputDecoration(border: InputBorder.none),
-        ),
-        trailing: IconButton(
-          onPressed: () async => await _save(context),
-          icon: const Icon(Icons.save_outlined),
-        ),
-        leading: IconButton(
-          onPressed: () => setState(() => isCorrect = !isCorrect),
-          icon: isCorrect
-              ? const Icon(Icons.radio_button_checked)
-              : const Icon(Icons.radio_button_off),
+    return Card(
+      child: Dismissible(
+        background: _background(),
+        key: Key(widget.alternative.id),
+        onDismissed: (_) async => await _delete(context),
+        direction: DismissDirection.endToStart,
+        child: ListTile(
+          title: TextField(
+            textInputAction: TextInputAction.done,
+            onSubmitted: (_) async => await _save(context),
+            controller: controller,
+            decoration: const InputDecoration(border: InputBorder.none),
+          ),
+          trailing: IconButton(
+            onPressed: () async => await _save(context),
+            icon: const Icon(Icons.save_outlined),
+          ),
+          leading: IconButton(
+            onPressed: () => setState(() => isCorrect = !isCorrect),
+            icon: isCorrect
+                ? const Icon(Icons.radio_button_checked)
+                : const Icon(Icons.radio_button_off),
+          ),
         ),
       ),
     );
