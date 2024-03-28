@@ -20,7 +20,8 @@ class _HomePageState extends State<HomePage> {
   final tabs = [
     const LearnPage(),
     const ChatPage(),
-    Placeholder(),
+    //TODO: Progress Page
+    const Placeholder(),
     const ProfilePage(),
   ];
 

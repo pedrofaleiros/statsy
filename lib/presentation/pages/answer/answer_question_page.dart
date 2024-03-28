@@ -47,10 +47,7 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
   Widget build(BuildContext context) {
     if (_isLoading) return _loading;
     return question == null || alts == null
-        //TODO: CONCLUIR PAGE
-        ? const Placeholder(
-            child: Text('Concluir'),
-          )
+        ? _finishPage
         : QuestionPage(
             lesson: lesson,
             question: question!,
@@ -64,6 +61,17 @@ class _AnswerQuestionPageState extends State<AnswerQuestionPage> {
         child: Center(
           child: CircularProgressIndicator(color: AppColors.mint),
         ),
+      ),
+    );
+  }
+
+  Widget get _finishPage {
+    //TODO: concluir
+    return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 0,
+        leading: Container(),
+        title: const Text('Concluir'),
       ),
     );
   }
