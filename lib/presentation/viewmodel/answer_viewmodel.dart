@@ -16,14 +16,15 @@ class AnswerViewmodel {
   }
 
   Future<void> answer(AlternativeModel alt) async {
-    final userId = FirebaseAuth.instance.currentUser!.uid;
-    final res = await _usecase.answer(
-      AnswerModel(
-        userId: userId,
-        alternativeId: alt.id,
-        questionId: alt.questionId,
-      ),
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+
+    final answer = AnswerModel(
+      userId: userId ?? "",
+      alternativeId: alt.id,
+      questionId: alt.questionId,
     );
+
+    final res = await _usecase.answer(answer);
 
     if (res != null) {
       onError?.call(res);

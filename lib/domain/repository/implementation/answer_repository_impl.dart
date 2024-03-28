@@ -4,12 +4,9 @@ import 'package:statsy/domain/repository/answer_repository.dart';
 import 'package:statsy/utils/firestore_constants.dart';
 
 class AnswerRepositoryImpl implements AnswerRepository {
-  final FirebaseFirestore db;
-
-  AnswerRepositoryImpl() : db = FirebaseFirestore.instance;
-
   @override
   Future<void> answerQuestion(AnswerModel answer) async {
+    final db = FirebaseFirestore.instance;
     final ref = db.collection(FireConst.ANSWER).doc(answer.id);
     await ref.set(answer.toMap());
   }
@@ -19,6 +16,7 @@ class AnswerRepositoryImpl implements AnswerRepository {
     String userId,
     String questionId,
   ) async {
+    final db = FirebaseFirestore.instance;
     final ref = db.collection(FireConst.ANSWER).doc(
           AnswerModel.getId(userId, questionId),
         );
@@ -27,6 +25,7 @@ class AnswerRepositoryImpl implements AnswerRepository {
 
   @override
   Future<QuerySnapshot<Map<String, dynamic>>> list(String userId) async {
+    final db = FirebaseFirestore.instance;
     return await db
         .collection(FireConst.ANSWER)
         .where("userId", isEqualTo: userId)
@@ -35,6 +34,7 @@ class AnswerRepositoryImpl implements AnswerRepository {
 
   @override
   Stream<QuerySnapshot<Map<String, dynamic>>> stream(String userId) {
+    final db = FirebaseFirestore.instance;
     return db
         .collection(FireConst.ANSWER)
         .where("userId", isEqualTo: userId)

@@ -1,72 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
+import 'package:statsy/domain/models/answer_model.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
 import 'package:statsy/domain/models/question_model.dart';
 import 'package:statsy/presentation/pages/answer/load_question_page.dart';
-import 'package:statsy/presentation/viewmodel/answer_viewmodel.dart';
 import 'package:statsy/presentation/widgets/alternative_list_tile.dart';
 import 'package:statsy/presentation/widgets/get_level_color.dart';
 import 'package:statsy/presentation/widgets/question_app_bar.dart';
 import 'package:statsy/presentation/widgets/question_content.dart';
-import 'package:statsy/presentation/widgets/show_correct_answer.dart';
-import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
-import 'package:statsy/presentation/widgets/show_wrong_answer.dart';
 import 'package:statsy/utils/app_colors.dart';
 
-class QuestionPage extends StatefulWidget {
-  const QuestionPage({
+class ViewQuestionPage extends StatelessWidget {
+  const ViewQuestionPage({
     super.key,
     required this.lesson,
     required this.question,
     required this.alts,
+    required this.answer,
   });
 
   final LessonModel lesson;
   final QuestionModel question;
   final List<AlternativeModel> alts;
+  final AnswerModel answer;
 
-  @override
-  State<QuestionPage> createState() => _QuestionPageState();
-}
-
-class _QuestionPageState extends State<QuestionPage> {
-  String selectedId = "";
-
-  Future<void> _answer() async {
-    final viewmodel = context.read<AnswerViewmodel>();
-
-    final alt = widget.alts.firstWhere((element) => element.id == selectedId);
-
-    viewmodel.onCorrect = () {
-      showCorrectAnswer(context, "Acertou!").then((value) => _next());
-    };
-
-    viewmodel.onWrong = () {
-      showWrongAnswer(context, "Resposta incorreta").then((value) => _next());
-    };
-
-    viewmodel.onError = (message) {
-      showMessageSnackBar(context: context, message: message ?? "Erro");
-    };
-
-    //TODO: answer
-    await viewmodel.testAnswer(alt);
-  }
-
-  void _next() {
-    Navigator.pushReplacementNamed(
-      context,
-      LoadQuestionPage.routeName,
-      arguments: widget.lesson,
-    );
+  bool get isAnswerCorrect {
+    for (var alt in alts) {
+      if (alt.id == answer.alternativeId) {
+        return alt.isCorrect;
+      }
+    }
+    return false;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: questionAppBar(context, getLevelColor(widget.lesson.level)),
+      appBar: questionAppBar(context, getLevelColor(lesson.level)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -75,13 +46,14 @@ class _QuestionPageState extends State<QuestionPage> {
               Expanded(
                 child: ListView(
                   children: [
-                    QuestionContent(content: widget.question.content),
+                    QuestionContent(content: question.content),
                     const SizedBox(height: 16),
                     ..._alternativesList,
                   ],
                 ),
               ),
-              _answerButton,
+              _message,
+              _nextButton(context),
             ],
           ),
         ),
@@ -89,25 +61,47 @@ class _QuestionPageState extends State<QuestionPage> {
     );
   }
 
-  Iterable<Widget> get _alternativesList {
-    return widget.alts.map(
-      (alt) => AlternativeListTile(
-        isSelected: selectedId == alt.id,
-        alternative: alt,
-        onTap: (id) => setState(() => selectedId = id),
-        color: getLevelColor(widget.lesson.level),
+  Widget get _message {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+      child: ListTile(
+        leading: isAnswerCorrect
+            ? const Icon(Icons.check_circle, color: AppColors.green)
+            : const Icon(Icons.close, color: AppColors.red),
+        title: isAnswerCorrect
+            ? const Text('Você acertou essa questão.')
+            : const Text('Você respondeu incorretamente essa questão.'),
       ),
     );
   }
 
-  Widget get _answerButton {
+  Iterable<Widget> get _alternativesList {
+    return alts.map(
+      (alt) => AlternativeListTile(
+        isSelected: answer.alternativeId == alt.id,
+        alternative: alt,
+        onTap: (id) {},
+        color: isAnswerCorrect ? AppColors.green : AppColors.red,
+      ),
+    );
+  }
+
+  void _next(BuildContext context) {
+    Navigator.pushReplacementNamed(
+      context,
+      LoadQuestionPage.routeName,
+      arguments: lesson,
+    );
+  }
+
+  Widget _nextButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: CupertinoButton(
-        color: getLevelColor(widget.lesson.level),
-        onPressed: selectedId == "" ? null : () async => await _answer(),
+        color: getLevelColor(lesson.level),
+        onPressed: () => _next(context),
         child: Text(
-          "Responder",
+          "Prosseguir",
           style: TextStyle(
             fontFamily: 'OpenSans',
             color: Theme.of(context).brightness == Brightness.dark

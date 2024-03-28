@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
-import 'package:statsy/presentation/pages/answer/answer_question_page.dart';
+import 'package:statsy/presentation/pages/answer/load_question_page.dart';
 import 'package:statsy/presentation/viewmodel/game_viewmodel.dart';
 import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
 import 'package:statsy/utils/app_colors.dart';
@@ -31,7 +31,7 @@ class _LoadLessonPageState extends State<LoadLessonPage> {
     viewmodel.onSuccess = () {
       Navigator.pushReplacementNamed(
         context,
-        AnswerQuestionPage.routeName,
+        LoadQuestionPage.routeName,
         arguments: lesson,
       );
     };
