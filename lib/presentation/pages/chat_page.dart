@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/chat_viewmodel.dart';
@@ -68,9 +66,9 @@ class _ChatPageState extends State<ChatPage> {
     return ListView(
       shrinkWrap: true,
       children: [
-        AuraWidget(size: 96),
-        SizedBox(height: 16),
-        Align(
+        const AuraWidget(size: 96),
+        const SizedBox(height: 16),
+        const Align(
           alignment: Alignment.center,
           child: Text(
             'Como posso te ajudar?',
@@ -80,7 +78,7 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         _hintItem("Me explique permutação."),
         _hintItem("O que é arranjo simples e composto?"),
         _hintItem("Qual a diferença de combinação e permutação?"),
@@ -106,7 +104,7 @@ class _ChatPageState extends State<ChatPage> {
               // maxLines: 3,
               keyboardType: TextInputType.multiline,
               controller: controller,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Faça sua pergunta...',
                 border: InputBorder.none,
               ),

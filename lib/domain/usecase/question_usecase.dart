@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:statsy/domain/cache/questions_cache.dart';
 import 'package:statsy/domain/models/question_model.dart';
 import 'package:statsy/domain/repository/question_repository.dart';

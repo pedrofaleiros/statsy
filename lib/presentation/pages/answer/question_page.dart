@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +12,7 @@ import 'package:statsy/presentation/widgets/alternative_list_tile.dart';
 import 'package:statsy/presentation/widgets/get_level_color.dart';
 import 'package:statsy/presentation/widgets/question_app_bar.dart';
 import 'package:statsy/presentation/widgets/question_content.dart';
+import 'package:statsy/presentation/widgets/question_image.dart';
 import 'package:statsy/presentation/widgets/show_correct_answer.dart';
 import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
 import 'package:statsy/presentation/widgets/show_wrong_answer.dart';
@@ -161,17 +160,5 @@ class _QuestionPageState extends State<QuestionPage> {
         ),
       ),
     );
-  }
-}
-
-class QuestionImage extends StatelessWidget {
-  const QuestionImage({super.key, required this.image});
-
-  final String? image;
-
-  @override
-  Widget build(BuildContext context) {
-    if (image == null) return Container();
-    return Image.network(image!);
   }
 }

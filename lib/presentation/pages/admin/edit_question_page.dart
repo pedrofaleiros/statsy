@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
@@ -165,7 +163,7 @@ class AlternativesListView extends StatelessWidget {
         decoration: InputDecoration(
           suffixIcon: IconButton(
             onPressed: () async => await _addAlt(context, controller),
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
           ),
           hintText: 'Text',
         ),

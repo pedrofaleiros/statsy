@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
@@ -37,7 +35,7 @@ class LessonsPage extends StatelessWidget {
 
   Widget _list(List<LessonModel> lessons) {
     return Card(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -51,7 +49,7 @@ class LessonsPage extends StatelessWidget {
   Widget get _loading => Column(
         children: [
           for (int i = 0; i < 3; i++)
-            Card(
+            const Card(
               margin: EdgeInsets.all(8),
               elevation: 4,
               child: SizedBox(height: 60, width: double.infinity),

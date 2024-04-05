@@ -1,7 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
@@ -23,7 +19,7 @@ class LessonListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       message: "Iniciar lição",
-      showDuration: Duration(seconds: 1),
+      showDuration: const Duration(seconds: 1),
       child: ListTile(
         onTap: () => Navigator.pushNamed(
           context,
@@ -69,7 +65,7 @@ class LessonListTile extends StatelessWidget {
       future: context.read<QuestionViewmodel>().listQuestions(lesson.id),
       builder: (context, snapshot) {
         if (isWaiting(snapshot) || !snapshot.hasData) {
-          return Column(
+          return const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [SizedBox(height: 8)],
           );
@@ -78,7 +74,7 @@ class LessonListTile extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text("${questions.length} questões"),
           ],
         );

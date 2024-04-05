@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/lesson_viewmodel.dart';
@@ -26,7 +24,7 @@ class LearnPage extends StatelessWidget {
       future: context.read<LessonViewmodel>().listLessons(),
       builder: (context, snapshot) {
         if (isWaiting(snapshot) || !snapshot.hasData) {
-          return LinearProgressIndicator();
+          return const LinearProgressIndicator();
         }
 
         final lessons = snapshot.data!;
