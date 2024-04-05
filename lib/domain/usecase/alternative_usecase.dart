@@ -7,19 +7,10 @@ class AlternativeUsecase {
 
   AlternativeUsecase(this._repository);
 
-  Stream<List<AlternativeModel>> stream(String questionId) {
-    return _repository.stream(questionId).map(
-          (snapshot) => snapshot.docs
-              .map((e) => AlternativeModel.fromMap(e.data(), e.id))
-              .toList(),
-        );
-  }
-
   Future<List<AlternativeModel>> list(String questionId) async {
     final cache = AlternativesCache.instance.get(questionId);
     if (cache != null) return cache;
 
-    await Future.delayed(const Duration(seconds: 3));
     final data = await _repository.list(questionId);
 
     final list = data.docs
@@ -64,5 +55,13 @@ class AlternativeUsecase {
       return AlternativeModel.fromMap(data.data()!, data.id);
     }
     return null;
+  }
+
+  Stream<List<AlternativeModel>> stream(String questionId) {
+    return _repository.stream(questionId).map(
+          (snapshot) => snapshot.docs
+              .map((e) => AlternativeModel.fromMap(e.data(), e.id))
+              .toList(),
+        );
   }
 }

@@ -31,33 +31,6 @@ class ChatViewmodel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> ask2(String prompt) async {
-    if (prompt == "") {
-      return;
-    }
-    GenerateContentResponse? response;
-    try {
-      _setIsLoading(true);
-      final history = _history;
-
-      _addMessage(userText: prompt);
-
-      //TODO
-      response = null;
-    } catch (e) {
-      onError?.call("Erro, tente novamente.");
-      _messages.removeLast();
-      notifyListeners();
-    } finally {
-      if (response != null) {
-        _messages[_messages.length - 1] =
-            _messages[_messages.length - 1].copyWith(chatText: response.text);
-      }
-      _setIsLoading(false);
-    }
-    _setIsLoading(false);
-  }
-
   Future<void> ask(String prompt) async {
     if (prompt == "") {
       return;

@@ -9,17 +9,11 @@ class QuestionUsecase {
 
   QuestionUsecase(this._repository);
 
-  Stream<List<QuestionModel>> stream(String lessonId) {
-    return _repository.streamQuestions(lessonId).map(
-          (snapshot) => snapshot.docs
-              .map((e) => QuestionModel.fromMap(e.data(), e.id))
-              .toList(),
-        );
-  }
-
   Future<List<QuestionModel>> list(String lessonId) async {
     final cache = QuestionsCache.instance.get(lessonId);
     if (cache != null) return cache;
+
+    await Future.delayed(const Duration(seconds: 3));
 
     final data = await _repository.listQuestions(lessonId);
     final list = data.docs
@@ -64,5 +58,13 @@ class QuestionUsecase {
       return QuestionModel.fromMap(data.data()!, data.id);
     }
     return null;
+  }
+
+  Stream<List<QuestionModel>> stream(String lessonId) {
+    return _repository.streamQuestions(lessonId).map(
+          (snapshot) => snapshot.docs
+              .map((e) => QuestionModel.fromMap(e.data(), e.id))
+              .toList(),
+        );
   }
 }

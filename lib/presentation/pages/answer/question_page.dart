@@ -11,16 +11,13 @@ import 'package:statsy/presentation/pages/answer/load_question_page.dart';
 import 'package:statsy/presentation/viewmodel/answer_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/tutor_viewmodel.dart';
 import 'package:statsy/presentation/widgets/alternative_list_tile.dart';
-import 'package:statsy/presentation/widgets/aura_widget.dart';
 import 'package:statsy/presentation/widgets/get_level_color.dart';
-import 'package:statsy/presentation/widgets/message_card.dart';
 import 'package:statsy/presentation/widgets/question_app_bar.dart';
 import 'package:statsy/presentation/widgets/question_content.dart';
 import 'package:statsy/presentation/widgets/show_correct_answer.dart';
 import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
 import 'package:statsy/presentation/widgets/show_wrong_answer.dart';
 import 'package:statsy/utils/app_colors.dart';
-import 'package:statsy/utils/is_waiting.dart';
 
 class QuestionPage extends StatefulWidget {
   const QuestionPage({
@@ -44,7 +41,7 @@ class _QuestionPageState extends State<QuestionPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) => _load(widget.question.id),
     );
   }
@@ -130,13 +127,6 @@ class _QuestionPageState extends State<QuestionPage> {
           ),
         ),
       ),
-    );
-  }
-
-  IconButton _helpButton() {
-    return IconButton(
-      onPressed: () async {},
-      icon: const AuraWidget(size: 32),
     );
   }
 

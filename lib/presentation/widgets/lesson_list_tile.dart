@@ -3,10 +3,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
 import 'package:statsy/presentation/pages/answer/load_lesson_page.dart';
+import 'package:statsy/presentation/viewmodel/question_viewmodel.dart';
 import 'package:statsy/presentation/widgets/get_level_color.dart';
 import 'package:statsy/utils/app_colors.dart';
+import 'package:statsy/utils/is_waiting.dart';
 
 class LessonListTile extends StatelessWidget {
   const LessonListTile({
@@ -29,7 +32,7 @@ class LessonListTile extends StatelessWidget {
         ),
         leading: _leading(lesson),
         title: _title(lesson),
-        subtitle: _randomPlaceholder,
+        subtitle: _subtitle(context, lesson),
         trailing: const Icon(Icons.play_arrow),
       ),
     );
@@ -58,14 +61,28 @@ class LessonListTile extends StatelessWidget {
     );
   }
 
-  Widget get _randomPlaceholder {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 8),
-        Text("${Random.secure().nextInt(5) + 1} questões"),
-        Text("${Random.secure().nextInt(80) + 21}% completo"),
-      ],
+  Widget _subtitle(
+    BuildContext context,
+    LessonModel lesson,
+  ) {
+    return FutureBuilder(
+      future: context.read<QuestionViewmodel>().listQuestions(lesson.id),
+      builder: (context, snapshot) {
+        if (isWaiting(snapshot) || !snapshot.hasData) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [SizedBox(height: 8)],
+          );
+        }
+        final questions = snapshot.data!;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 8),
+            Text("${questions.length} questões"),
+          ],
+        );
+      },
     );
   }
 }
