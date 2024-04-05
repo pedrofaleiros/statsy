@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:statsy/app_widget.dart';
 import 'package:statsy/firebase_options.dart';
@@ -15,6 +16,11 @@ void main() async {
   setupLocator();
 
   await dotenv.load(fileName: ".env");
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(const AppWidget());
 }

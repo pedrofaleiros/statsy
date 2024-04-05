@@ -34,10 +34,19 @@ class ViewQuestionPage extends StatelessWidget {
     return false;
   }
 
+  String get correctId {
+    for (var alt in alts) {
+      if (alt.isCorrect) {
+        return alt.id;
+      }
+    }
+    return "";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: questionAppBar(context, getLevelColor(lesson.level)),
+      appBar: questionAppBar(context, getLevelColor(lesson.level), null),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -76,12 +85,23 @@ class ViewQuestionPage extends StatelessWidget {
   }
 
   Iterable<Widget> get _alternativesList {
+    if (isAnswerCorrect) {
+      return alts.map(
+        (alt) => AlternativeListTile(
+          isSelected: answer.alternativeId == alt.id,
+          alternative: alt,
+          onTap: (id) {},
+          color: AppColors.green,
+        ),
+      );
+    }
+
     return alts.map(
       (alt) => AlternativeListTile(
-        isSelected: answer.alternativeId == alt.id,
+        isSelected: answer.alternativeId == alt.id || correctId == alt.id,
         alternative: alt,
         onTap: (id) {},
-        color: isAnswerCorrect ? AppColors.green : AppColors.red,
+        color: correctId == alt.id ? AppColors.green : AppColors.red,
       ),
     );
   }

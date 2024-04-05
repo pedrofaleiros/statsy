@@ -3,12 +3,14 @@ class QuestionModel {
   final String content;
   final String lessonId;
   final String? imageUrl;
+  final bool? hasImage;
 
   QuestionModel({
     required this.id,
     required this.content,
     required this.lessonId,
     this.imageUrl,
+    this.hasImage,
   });
 
   Map<String, dynamic> toMap() {
@@ -25,6 +27,7 @@ class QuestionModel {
       content: map['content'],
       lessonId: map['lessonId'],
       imageUrl: map['imageUrl'],
+      hasImage: map['hasImage'] ?? false,
     );
   }
 

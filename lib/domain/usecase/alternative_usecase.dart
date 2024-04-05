@@ -1,3 +1,4 @@
+import 'package:statsy/domain/cache/alternatives_cache.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
 import 'package:statsy/domain/repository/alternative_repository.dart';
 
@@ -15,10 +16,18 @@ class AlternativeUsecase {
   }
 
   Future<List<AlternativeModel>> list(String questionId) async {
+    final cache = AlternativesCache.instance.get(questionId);
+    if (cache != null) return cache;
+
+    await Future.delayed(const Duration(seconds: 3));
     final data = await _repository.list(questionId);
-    return data.docs
+
+    final list = data.docs
         .map((doc) => AlternativeModel.fromMap(doc.data(), doc.id))
         .toList();
+
+    AlternativesCache.instance.set(questionId, list);
+    return list;
   }
 
   Future<String?> save(AlternativeModel alternative) async {

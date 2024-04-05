@@ -5,6 +5,7 @@ import 'package:statsy/utils/app_colors.dart';
 Future<void> showWrongAnswer(
   BuildContext context,
   String message,
+  String correct,
 ) async {
   await showModalBottomSheet(
     context: context,
@@ -24,9 +25,23 @@ Future<void> showWrongAnswer(
               title: Text(
                 message,
                 style: const TextStyle(
-                    color: AppColors.red,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500),
+                  color: AppColors.red,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Alternativa correta: $correct",
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),

@@ -10,6 +10,7 @@ import 'package:statsy/domain/repository/question_repository.dart';
 import 'package:statsy/domain/usecase/alternative_usecase.dart';
 import 'package:statsy/domain/usecase/answer_usecase.dart';
 import 'package:statsy/domain/usecase/auth_usecase.dart';
+import 'package:statsy/domain/usecase/chat_usecase.dart';
 import 'package:statsy/domain/usecase/lesson_usecase.dart';
 import 'package:statsy/domain/usecase/question_usecase.dart';
 
@@ -50,4 +51,6 @@ void setupLocator() {
 
   // ---------- GOOGLE ----------
   locator.registerFactory(() => AuthUsecase());
+
+  locator.registerFactory(() => ChatUsecase());
 }

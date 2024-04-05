@@ -29,17 +29,21 @@ class _LoadLessonPageState extends State<LoadLessonPage> {
     final viewmodel = context.read<GameViewmodel>();
 
     viewmodel.onSuccess = () {
-      Navigator.pushReplacementNamed(
-        context,
-        LoadQuestionPage.routeName,
-        arguments: lesson,
-      );
+      if (mounted) {
+        Navigator.pushReplacementNamed(
+          context,
+          LoadQuestionPage.routeName,
+          arguments: lesson,
+        );
+      }
     };
 
     viewmodel.onError = (message) {
-      Navigator.pop(context);
-      showMessageSnackBar(
-          context: context, message: message ?? "Erro ao iniciar lição");
+      if (mounted) {
+        Navigator.pop(context);
+        showMessageSnackBar(
+            context: context, message: message ?? "Erro ao iniciar lição");
+      }
     };
 
     await viewmodel.loadQuestions(lesson.id);

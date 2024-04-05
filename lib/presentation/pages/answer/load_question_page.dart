@@ -46,7 +46,9 @@ class LoadQuestionPageState extends State<LoadQuestionPage> {
       answer = await answerVm.getAnswer(question!.id);
     }
 
-    setState(() => _isLoading = false);
+    if (mounted) {
+      setState(() => _isLoading = false);
+    }
   }
 
   @override

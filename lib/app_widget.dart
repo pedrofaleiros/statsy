@@ -14,6 +14,7 @@ import 'package:statsy/presentation/viewmodel/chat_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/game_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/lesson_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/question_viewmodel.dart';
+import 'package:statsy/presentation/viewmodel/tutor_viewmodel.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -24,6 +25,9 @@ class AppWidget extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<ChatViewmodel>(
           create: (context) => ChatViewmodel(),
+        ),
+        ChangeNotifierProvider<TutorViewmodel>(
+          create: (context) => TutorViewmodel(),
         ),
         ChangeNotifierProvider<AuthViewmodel>(
           create: (context) => AuthViewmodel(),

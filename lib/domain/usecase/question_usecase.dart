@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:statsy/domain/cache/questions_cache.dart';
 import 'package:statsy/domain/models/question_model.dart';
 import 'package:statsy/domain/repository/question_repository.dart';
 
@@ -17,10 +18,16 @@ class QuestionUsecase {
   }
 
   Future<List<QuestionModel>> list(String lessonId) async {
+    final cache = QuestionsCache.instance.get(lessonId);
+    if (cache != null) return cache;
+
     final data = await _repository.listQuestions(lessonId);
-    return data.docs
+    final list = data.docs
         .map((doc) => QuestionModel.fromMap(doc.data(), doc.id))
         .toList();
+
+    QuestionsCache.instance.set(lessonId, list);
+    return list;
   }
 
   Future<String?> save(QuestionModel question) async {

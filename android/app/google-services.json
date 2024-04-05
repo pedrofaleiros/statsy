@@ -13,7 +13,20 @@
           "package_name": "com.example.statsy"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "836656077067-i0tm4mklth994k72ggea2ukscddg0pbc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.statsy",
+            "certificate_hash": "7920f0e1dab96bcd91e1d4fdb384fcdf4c420742"
+          }
+        },
+        {
+          "client_id": "836656077067-01op2ef328p127ghhbgtvo8dh01rghnl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCSg48WRAqk1_zQ_CoFkSwCvh1Lyij5SSQ"
@@ -21,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836656077067-01op2ef328p127ghhbgtvo8dh01rghnl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "836656077067-8iom4ndnebbb1503cnp26en4tojtuum6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.statsy.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }

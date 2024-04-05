@@ -1,7 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:statsy/presentation/widgets/lesson_level_list_item.dart';
+import 'package:provider/provider.dart';
+import 'package:statsy/domain/models/lesson_model.dart';
+import 'package:statsy/presentation/viewmodel/lesson_viewmodel.dart';
+import 'package:statsy/presentation/widgets/get_level_color.dart';
+import 'package:statsy/presentation/widgets/lesson_list_tile.dart';
+import 'package:statsy/utils/app_colors.dart';
+import 'package:statsy/utils/is_waiting.dart';
 
 class LearnPage extends StatelessWidget {
   const LearnPage({super.key});
@@ -15,25 +23,28 @@ class LearnPage extends StatelessWidget {
         title: const Text("Aprender"),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [_lessonsCard()],
-          ),
-        ),
+        child: _lessons(context),
       ),
     );
   }
 
-  Widget _lessonsCard() {
-    return Card(
-      margin: EdgeInsets.all(8),
-      child: Column(
-        children: const [
-          LessonLevelListItem(level: 1),
-          LessonLevelListItem(level: 2),
-          LessonLevelListItem(level: 3),
-        ],
-      ),
+  Widget _lessons(BuildContext context) {
+    return FutureBuilder(
+      future: context.read<LessonViewmodel>().listLessons(),
+      builder: (context, snapshot) {
+        if (isWaiting(snapshot) || !snapshot.hasData) {
+          return LinearProgressIndicator();
+        }
+
+        final lessons = snapshot.data!;
+
+        return ListView.builder(
+          itemCount: lessons.length,
+          itemBuilder: (context, index) => LessonListTile(
+            lesson: lessons[index],
+          ),
+        );
+      },
     );
   }
 }
