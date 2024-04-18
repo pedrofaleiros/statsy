@@ -52,7 +52,8 @@ class _QuestionPageState extends State<QuestionPage> {
     final correct = widget.alts.firstWhere((element) => element.isCorrect);
 
     viewmodel.onCorrect = () {
-      showCorrectAnswer(context, "Acertou!").then((value) => _next());
+      showCorrectAnswer(context, "Acertou!", widget.question.id)
+          .then((value) => _next());
     };
 
     viewmodel.onWrong = () {
@@ -60,6 +61,7 @@ class _QuestionPageState extends State<QuestionPage> {
         context,
         "Resposta incorreta",
         correct.text,
+        widget.question.id,
       ).then((value) => _next());
     };
 
