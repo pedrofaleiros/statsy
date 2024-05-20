@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:statsy/domain/usecase/auth_usecase.dart';
 import 'package:statsy/utils/service_locator.dart';
 
@@ -63,8 +62,8 @@ class AuthViewmodel extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    GoogleSignIn googleSignIn = GoogleSignIn();
-    await googleSignIn.signOut();
+    // GoogleSignIn googleSignIn = GoogleSignIn();
+    // await googleSignIn.signOut();
     await FirebaseAuth.instance.signOut();
   }
 

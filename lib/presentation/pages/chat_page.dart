@@ -92,7 +92,7 @@ class _ChatPageState extends State<ChatPage> {
         border: Border.all(color: AppColors.grey, width: 1),
         borderRadius: BorderRadius.circular(16),
       ),
-      // margin: const EdgeInsets.only(top: 16),
+      margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.only(left: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

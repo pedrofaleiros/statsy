@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
@@ -9,7 +10,9 @@ import 'package:statsy/presentation/pages/answer/view_question_page.dart';
 import 'package:statsy/presentation/viewmodel/alternative_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/answer_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/game_viewmodel.dart';
+import 'package:statsy/presentation/viewmodel/question_viewmodel.dart';
 import 'package:statsy/utils/app_colors.dart';
+import 'package:statsy/utils/is_waiting.dart';
 
 class LoadQuestionPage extends StatefulWidget {
   const LoadQuestionPage({super.key});
@@ -86,12 +89,140 @@ class LoadQuestionPageState extends State<LoadQuestionPage> {
   }
 
   Widget get _finishPage {
-    //TODO: concluir
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0,
         leading: Container(),
-        title: const Text('Concluir'),
+        title: Text(lesson.name),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: FutureBuilder(
+              future:
+                  context.read<QuestionViewmodel>().listQuestions(lesson.id),
+              builder: (context, snapshot) {
+                if (isWaiting(snapshot) || !snapshot.hasData) {
+                  return Container();
+                }
+
+                List<QuestionModel> questions = snapshot.data!;
+                return ListView.builder(
+                  itemCount: questions.length,
+                  itemBuilder: (context, index) =>
+                      AnseredQuestionListTile(question: questions[index]),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              width: double.infinity,
+              child: CupertinoButton(
+                color: AppColors.blue,
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  "Finalizar",
+                  style: TextStyle(
+                    fontFamily: 'OpenSans',
+                    color: Theme.of(context).brightness == Brightness.dark
+                        ? AppColors.black
+                        : AppColors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class AnseredQuestionListTile extends StatefulWidget {
+  const AnseredQuestionListTile({
+    super.key,
+    required this.question,
+  });
+
+  final QuestionModel question;
+
+  @override
+  State<AnseredQuestionListTile> createState() =>
+      _AnseredQuestionListTileState();
+}
+
+class _AnseredQuestionListTileState extends State<AnseredQuestionListTile> {
+  AnswerModel? answer;
+  List<AlternativeModel> alternatives = [];
+
+  Future<void> _loadData() async {
+    await context
+        .read<AnswerViewmodel>()
+        .getAnswer(widget.question.id)
+        .then((data) async {
+      answer = data;
+      alternatives =
+          await context.read<AlternativeViewmodel>().list(widget.question.id);
+    });
+
+    setState(() {});
+  }
+
+  String getCorrectId() {
+    for (var alt in alternatives) {
+      if (alt.isCorrect) return alt.id;
+    }
+    return "";
+  }
+
+  bool isCorrect(String? alternativeId) {
+    if (alternativeId == null) return false;
+    return alternativeId == getCorrectId();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance
+        .addPostFrameCallback((timeStamp) async => _loadData());
+  }
+
+  bool expand = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        onTap: () => setState(() => expand = !expand),
+        contentPadding: const EdgeInsets.only(right: 8, left: 16),
+        title: Text(
+          widget.question.content,
+          overflow: expand ? null : TextOverflow.ellipsis,
+        ),
+        trailing: answer == null
+            ? null
+            : isCorrect(answer?.alternativeId)
+                ? Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(32),
+                      color: AppColors.green.withOpacity(0.75),
+                    ),
+                    child: const Icon(Icons.check),
+                  )
+                : Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(32),
+                      color: AppColors.red.withOpacity(0.75),
+                    ),
+                    child: const Icon(Icons.close),
+                  ),
       ),
     );
   }

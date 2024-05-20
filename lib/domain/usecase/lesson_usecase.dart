@@ -39,7 +39,7 @@ class LessonUsecase {
   }
 
   Future<String?> saveLesson(LessonModel lesson) async {
-    if (lesson.name == "" || lesson.name.length > 32) return "Nome inválido";
+    if (lesson.name == "" || lesson.name.length > 64) return "Nome inválido";
     if (lesson.points <= 0 || lesson.points > 1000) return "Pontos inválidos";
     if (lesson.level <= 0 || lesson.level > 10) return "Nível inválido";
     if (lesson.description == "" || lesson.description.length > 64) {

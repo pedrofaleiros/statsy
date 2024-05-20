@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
-import 'package:statsy/presentation/widgets/google_signin_button.dart';
 import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
 import 'package:statsy/utils/app_colors.dart';
 
@@ -71,8 +70,8 @@ class _LoginFormState extends State<SignUpForm> {
             _signUpButton,
             const SizedBox(height: 8),
             _divider,
-            const SizedBox(height: 8),
-            const GoogleSignInButton(),
+            // const SizedBox(height: 8),
+            // const GoogleSignInButton(),
             const SizedBox(height: 16),
             gotoLoginButton,
           ],

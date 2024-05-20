@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
@@ -9,9 +10,10 @@ import 'package:statsy/presentation/widgets/alternative_list_tile.dart';
 import 'package:statsy/presentation/widgets/get_level_color.dart';
 import 'package:statsy/presentation/widgets/question_app_bar.dart';
 import 'package:statsy/presentation/widgets/question_content.dart';
+import 'package:statsy/presentation/widgets/question_image.dart';
 import 'package:statsy/utils/app_colors.dart';
 
-class ViewQuestionPage extends StatelessWidget {
+class ViewQuestionPage extends StatefulWidget {
   const ViewQuestionPage({
     super.key,
     required this.lesson,
@@ -25,9 +27,14 @@ class ViewQuestionPage extends StatelessWidget {
   final List<AlternativeModel> alts;
   final AnswerModel answer;
 
+  @override
+  State<ViewQuestionPage> createState() => _ViewQuestionPageState();
+}
+
+class _ViewQuestionPageState extends State<ViewQuestionPage> {
   bool get isAnswerCorrect {
-    for (var alt in alts) {
-      if (alt.id == answer.alternativeId) {
+    for (var alt in widget.alts) {
+      if (alt.id == widget.answer.alternativeId) {
         return alt.isCorrect;
       }
     }
@@ -35,7 +42,7 @@ class ViewQuestionPage extends StatelessWidget {
   }
 
   String get correctId {
-    for (var alt in alts) {
+    for (var alt in widget.alts) {
       if (alt.isCorrect) {
         return alt.id;
       }
@@ -43,23 +50,42 @@ class ViewQuestionPage extends StatelessWidget {
     return "";
   }
 
+  String? image;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _loadImage(widget.question.id);
+    });
+  }
+
+  void _loadImage(String id) async {
+    try {
+      final storage = FirebaseStorage.instance.ref();
+      final pathReference = storage.child("resolution/res$id.png");
+      final data = await pathReference.getDownloadURL();
+      setState(() => image = data);
+    } catch (e) {
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: questionAppBar(context, getLevelColor(lesson.level), null),
+      appBar: questionAppBar(context, getLevelColor(widget.lesson.level), null),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
+          child: ListView(
             children: [
-              Expanded(
-                child: ListView(
-                  children: [
-                    QuestionContent(content: question.content),
-                    const SizedBox(height: 16),
-                    ..._alternativesList,
-                  ],
-                ),
+              QuestionContent(content: widget.question.content),
+              const SizedBox(height: 16),
+              ..._alternativesList,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: QuestionImage(image: image),
               ),
               _message,
               _nextButton(context),
@@ -86,9 +112,9 @@ class ViewQuestionPage extends StatelessWidget {
 
   Iterable<Widget> get _alternativesList {
     if (isAnswerCorrect) {
-      return alts.map(
+      return widget.alts.map(
         (alt) => AlternativeListTile(
-          isSelected: answer.alternativeId == alt.id,
+          isSelected: widget.answer.alternativeId == alt.id,
           alternative: alt,
           onTap: (id) {},
           color: AppColors.green,
@@ -96,9 +122,10 @@ class ViewQuestionPage extends StatelessWidget {
       );
     }
 
-    return alts.map(
+    return widget.alts.map(
       (alt) => AlternativeListTile(
-        isSelected: answer.alternativeId == alt.id || correctId == alt.id,
+        isSelected:
+            widget.answer.alternativeId == alt.id || correctId == alt.id,
         alternative: alt,
         onTap: (id) {},
         color: correctId == alt.id ? AppColors.green : AppColors.red,
@@ -110,7 +137,7 @@ class ViewQuestionPage extends StatelessWidget {
     Navigator.pushReplacementNamed(
       context,
       LoadQuestionPage.routeName,
-      arguments: lesson,
+      arguments: widget.lesson,
     );
   }
 
@@ -118,7 +145,7 @@ class ViewQuestionPage extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: CupertinoButton(
-        color: getLevelColor(lesson.level),
+        color: getLevelColor(widget.lesson.level),
         onPressed: () => _next(context),
         child: Text(
           "Prosseguir",

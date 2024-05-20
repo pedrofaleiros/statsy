@@ -84,6 +84,10 @@ class _EditLessonPageState extends State<EditLessonPage> {
         padding: const EdgeInsets.all(4.0),
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(lesson.id),
+            ),
             _firstCard(),
             _secondCard(),
             LessonQuestionsListView(lessonId: lesson.id),

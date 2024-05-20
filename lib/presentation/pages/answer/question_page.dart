@@ -69,8 +69,7 @@ class _QuestionPageState extends State<QuestionPage> {
       showMessageSnackBar(context: context, message: message ?? "Erro");
     };
 
-    //TODO: answer
-    await viewmodel.testAnswer(alt);
+    await viewmodel.answer(alt);
   }
 
   void _next() {

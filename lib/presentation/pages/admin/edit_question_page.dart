@@ -75,6 +75,10 @@ class _EditLessoQuestiontate extends State<EditQuestionPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(question.id),
+              ),
               _pageCard(),
               AlternativesListView(questionId: question.id)
             ],
