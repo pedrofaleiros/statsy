@@ -23,9 +23,7 @@ class ProfilePage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(child: Container()),
             _logout(context),
-            const SizedBox(height: 16),
           ],
         ),
       ),

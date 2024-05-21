@@ -10,6 +10,7 @@ class QuestionRepositoryImpl implements QuestionRepository {
     return db
         .collection(FireConst.QUESTION)
         .where("lessonId", isEqualTo: lessonId)
+        .orderBy("peso", descending: false)
         .snapshots();
   }
 
@@ -20,6 +21,7 @@ class QuestionRepositoryImpl implements QuestionRepository {
     return await db
         .collection(FireConst.QUESTION)
         .where("lessonId", isEqualTo: lessonId)
+        .orderBy("peso", descending: false)
         .get();
   }
 

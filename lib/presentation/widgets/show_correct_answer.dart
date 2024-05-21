@@ -58,23 +58,23 @@ class _CorrectAnswerState extends State<CorrectAnswer> {
 
   String? image;
 
-  bool show = false;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         _listTile(),
-        if (show)
-          Expanded(
-            child: Card(
-              elevation: 12,
-              child: ListView(
-                shrinkWrap: true,
-                children: [QuestionImage(image: image)],
-              ),
+        // if (show)
+        Expanded(
+          child: Card(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                QuestionImage(image: image),
+              ],
             ),
           ),
+        ),
         _button(),
       ],
     );
@@ -82,12 +82,6 @@ class _CorrectAnswerState extends State<CorrectAnswer> {
 
   ListTile _listTile() {
     return ListTile(
-      trailing: show
-          ? null
-          : TextButton(
-              onPressed: () => setState(() => show = true),
-              child: const Text('Ver resolução'),
-            ),
       leading: const Icon(
         Icons.check_box,
         color: AppColors.green,
@@ -111,7 +105,7 @@ class _CorrectAnswerState extends State<CorrectAnswer> {
         color: AppColors.green,
         onPressed: () => Navigator.pop(context),
         child: const Text(
-          'Próximo',
+          'Continuar',
           style: TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w500,

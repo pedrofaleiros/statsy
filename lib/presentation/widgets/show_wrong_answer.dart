@@ -62,29 +62,32 @@ class _WrongAnswerState extends State<WrongAnswer> {
 
   String? image;
 
-  bool show = false;
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         _listTile(),
-        if (show)
-          Expanded(
-            child: Card(
-              elevation: 12,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("Resposta: ${widget.alt}"),
+        Expanded(
+          child: Card(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Resposta: ${widget.alt}",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                  QuestionImage(image: image),
-                ],
-              ),
+                ),
+                QuestionImage(image: image),
+              ],
             ),
           ),
+        ),
         _button(),
       ],
     );
@@ -92,12 +95,6 @@ class _WrongAnswerState extends State<WrongAnswer> {
 
   ListTile _listTile() {
     return ListTile(
-      trailing: show
-          ? null
-          : TextButton(
-              onPressed: () => setState(() => show = true),
-              child: const Text('Ver resolução'),
-            ),
       leading: const Icon(
         Icons.check_box,
         color: AppColors.red,
@@ -121,7 +118,7 @@ class _WrongAnswerState extends State<WrongAnswer> {
         color: AppColors.red,
         onPressed: () => Navigator.pop(context),
         child: const Text(
-          'Próximo',
+          'Continuar',
           style: TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.w500,

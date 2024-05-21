@@ -22,6 +22,7 @@ class AnswerViewmodel {
       userId: userId ?? "",
       alternativeId: alt.id,
       questionId: alt.questionId,
+      isCorrect: alt.isCorrect,
     );
 
     final res = await _usecase.answer(answer);

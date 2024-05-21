@@ -14,7 +14,8 @@ class GameViewmodel extends ChangeNotifier {
     questions.clear();
     total = 0;
     try {
-      questions = await _questionUsecase.list(lessonId);
+      final data = await _questionUsecase.list(lessonId);
+      questions = data.reversed.toList();
       total = questions.length;
       onSuccess?.call();
     } catch (e) {

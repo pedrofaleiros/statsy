@@ -32,14 +32,14 @@ class ViewQuestionPage extends StatefulWidget {
 }
 
 class _ViewQuestionPageState extends State<ViewQuestionPage> {
-  bool get isAnswerCorrect {
-    for (var alt in widget.alts) {
-      if (alt.id == widget.answer.alternativeId) {
-        return alt.isCorrect;
-      }
-    }
-    return false;
-  }
+  // bool get isAnswerCorrect {
+  //   for (var alt in widget.alts) {
+  //     if (alt.id == widget.answer.alternativeId) {
+  //       return alt.isCorrect;
+  //     }
+  //   }
+  //   return false;
+  // }
 
   String get correctId {
     for (var alt in widget.alts) {
@@ -100,10 +100,10 @@ class _ViewQuestionPageState extends State<ViewQuestionPage> {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
       child: ListTile(
-        leading: isAnswerCorrect
+        leading: widget.answer.isCorrect
             ? const Icon(Icons.check_circle, color: AppColors.green)
             : const Icon(Icons.close, color: AppColors.red),
-        title: isAnswerCorrect
+        title: widget.answer.isCorrect
             ? const Text('Você acertou essa questão.')
             : const Text('Você respondeu incorretamente essa questão.'),
       ),
@@ -111,7 +111,7 @@ class _ViewQuestionPageState extends State<ViewQuestionPage> {
   }
 
   Iterable<Widget> get _alternativesList {
-    if (isAnswerCorrect) {
+    if (widget.answer.isCorrect) {
       return widget.alts.map(
         (alt) => AlternativeListTile(
           isSelected: widget.answer.alternativeId == alt.id,
@@ -148,7 +148,7 @@ class _ViewQuestionPageState extends State<ViewQuestionPage> {
         color: getLevelColor(widget.lesson.level),
         onPressed: () => _next(context),
         child: Text(
-          "Prosseguir",
+          "Continuar",
           style: TextStyle(
             fontFamily: 'OpenSans',
             color: Theme.of(context).brightness == Brightness.dark

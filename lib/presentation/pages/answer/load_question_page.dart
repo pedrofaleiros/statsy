@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
 import 'package:statsy/domain/models/answer_model.dart';
@@ -91,7 +92,9 @@ class LoadQuestionPageState extends State<LoadQuestionPage> {
   Widget get _finishPage {
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 0,
+        centerTitle: true,
+        backgroundColor: AppColors.black,
+        foregroundColor: AppColors.white,
         leading: Container(),
         title: Text(lesson.name),
       ),
@@ -115,24 +118,22 @@ class LoadQuestionPageState extends State<LoadQuestionPage> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: CupertinoButton(
-                color: AppColors.blue,
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  "Finalizar",
-                  style: TextStyle(
-                    fontFamily: 'OpenSans',
-                    color: Theme.of(context).brightness == Brightness.dark
-                        ? AppColors.black
-                        : AppColors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 1.2,
-                  ),
+          Container(
+            padding: const EdgeInsets.all(8),
+            width: double.infinity,
+            child: CupertinoButton(
+              color: AppColors.blue,
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                "Finalizar",
+                style: TextStyle(
+                  fontFamily: 'OpenSans',
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? AppColors.black
+                      : AppColors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 1.2,
                 ),
               ),
             ),
@@ -180,11 +181,6 @@ class _AnseredQuestionListTileState extends State<AnseredQuestionListTile> {
     return "";
   }
 
-  bool isCorrect(String? alternativeId) {
-    if (alternativeId == null) return false;
-    return alternativeId == getCorrectId();
-  }
-
   @override
   void initState() {
     super.initState();
@@ -197,6 +193,15 @@ class _AnseredQuestionListTileState extends State<AnseredQuestionListTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: answer != null && answer!.isCorrect
+              ? AppColors.green
+              : AppColors.red,
+        ),
+      ),
       child: ListTile(
         onTap: () => setState(() => expand = !expand),
         contentPadding: const EdgeInsets.only(right: 8, left: 16),
@@ -206,23 +211,9 @@ class _AnseredQuestionListTileState extends State<AnseredQuestionListTile> {
         ),
         trailing: answer == null
             ? null
-            : isCorrect(answer?.alternativeId)
-                ? Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32),
-                      color: AppColors.green.withOpacity(0.75),
-                    ),
-                    child: const Icon(Icons.check),
-                  )
-                : Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(32),
-                      color: AppColors.red.withOpacity(0.75),
-                    ),
-                    child: const Icon(Icons.close),
-                  ),
+            : answer != null && answer!.isCorrect
+                ? const Icon(Icons.check)
+                : const Icon(Icons.close),
       ),
     );
   }

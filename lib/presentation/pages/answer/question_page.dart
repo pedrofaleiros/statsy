@@ -37,6 +37,8 @@ class QuestionPage extends StatefulWidget {
 class _QuestionPageState extends State<QuestionPage> {
   String selectedId = "";
 
+  bool answered = false;
+
   @override
   void initState() {
     super.initState();
@@ -53,7 +55,8 @@ class _QuestionPageState extends State<QuestionPage> {
 
     viewmodel.onCorrect = () {
       showCorrectAnswer(context, "Acertou!", widget.question.id)
-          .then((value) => _next());
+          .then((value) => setState(() => answered = true));
+      // .then((value) => _next());
     };
 
     viewmodel.onWrong = () {
@@ -62,7 +65,8 @@ class _QuestionPageState extends State<QuestionPage> {
         "Resposta incorreta",
         correct.text,
         widget.question.id,
-      ).then((value) => _next());
+      ).then((value) => setState(() => answered = true));
+      // .then((value) => _next());
     };
 
     viewmodel.onError = (message) {
@@ -135,7 +139,7 @@ class _QuestionPageState extends State<QuestionPage> {
       (alt) => AlternativeListTile(
         isSelected: selectedId == alt.id,
         alternative: alt,
-        onTap: (id) => setState(() => selectedId = id),
+        onTap: answered ? (_) {} : (id) => setState(() => selectedId = id),
         color: getLevelColor(widget.lesson.level),
       ),
     );
@@ -146,9 +150,13 @@ class _QuestionPageState extends State<QuestionPage> {
       width: double.infinity,
       child: CupertinoButton(
         color: getLevelColor(widget.lesson.level),
-        onPressed: selectedId == "" ? null : () async => await _answer(),
+        onPressed: selectedId == ""
+            ? null
+            : answered
+                ? _next
+                : () async => await _answer(),
         child: Text(
-          "Responder",
+          answered ? "Próxima" : "Responder",
           style: TextStyle(
             fontFamily: 'OpenSans',
             color: Theme.of(context).brightness == Brightness.dark

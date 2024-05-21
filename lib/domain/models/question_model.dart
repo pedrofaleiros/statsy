@@ -18,6 +18,7 @@ class QuestionModel {
       "content": content,
       "lessonId": lessonId,
       "imageUrl": imageUrl,
+      "peso": 1,
     };
   }
 
