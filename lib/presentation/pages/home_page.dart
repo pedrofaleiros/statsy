@@ -15,25 +15,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _index = 2;
+  int _index = 0;
 
   final tabs = [
-    const ProfilePage(),
-    const ChatPage(),
     const LearnPage(),
+    const ChatPage(),
+    const ProfilePage(),
   ];
 
   final colors = [
     AppColors.orange,
-    AppColors.cyan,
-    AppColors.red,
+    AppColors.mint,
     AppColors.blue,
   ];
 
   final items = const [
     BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: "Perfil",
+      icon: Icon(Icons.school_rounded),
+      label: "Aprender",
     ),
     BottomNavigationBarItem(
       // icon: Icon(Icons.chat),
@@ -47,8 +46,8 @@ class _HomePageState extends State<HomePage> {
       label: "Chat",
     ),
     BottomNavigationBarItem(
-      icon: Icon(Icons.school),
-      label: "Aprender",
+      icon: Icon(Icons.person_rounded),
+      label: "Perfil",
     ),
   ];
 

@@ -43,6 +43,15 @@ class AnswerViewmodel {
     return await _usecase.getUserAnswer(userId, questionId);
   }
 
+  Future<List<AnswerModel>> listUserAnswers() async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser!.uid;
+      return await _usecase.listUserAnswers(userId);
+    } catch (e) {
+      return [];
+    }
+  }
+
   Function(String? message)? onError;
   Function()? onCorrect;
   Function()? onWrong;

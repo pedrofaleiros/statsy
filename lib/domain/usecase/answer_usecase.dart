@@ -21,4 +21,29 @@ class AnswerUsecase {
     }
     return null;
   }
+
+  Future<List<AnswerModel>> listUserAnswers(String userId) async {
+    final data = await _repository.list(userId);
+
+    final list =
+        data.docs.map((doc) => AnswerModel.fromMap(doc.data())).toList();
+
+    return list;
+  }
 }
+
+/* 
+  Future<List<QuestionModel>> list(String lessonId) async {
+      final cache = QuestionsCache.instance.get(lessonId);
+      if (cache != null) return cache;
+
+      final data = await _repository.listQuestions(lessonId);
+      final list = data.docs
+          .map((doc) => QuestionModel.fromMap(doc.data(), doc.id))
+          .toList();
+
+      QuestionsCache.instance.set(lessonId, list);
+      return list;
+  }
+
+ */

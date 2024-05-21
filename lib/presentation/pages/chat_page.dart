@@ -33,6 +33,8 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: AppColors.black,
+        foregroundColor: AppColors.white,
         title: const Text('Chat'),
       ),
       body: Padding(
@@ -90,7 +92,7 @@ class _ChatPageState extends State<ChatPage> {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: AppColors.grey, width: 1),
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(32),
       ),
       margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.only(left: 16),
@@ -101,7 +103,7 @@ class _ChatPageState extends State<ChatPage> {
             child: TextField(
               textInputAction: TextInputAction.newline,
               // onSubmitted: (value) async => await _send(),
-              // maxLines: 3,
+              maxLines: null,
               keyboardType: TextInputType.multiline,
               controller: controller,
               decoration: const InputDecoration(
@@ -117,13 +119,14 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _sendButton() {
-    return Card(
-      child: IconButton(
-        onPressed: context.watch<ChatViewmodel>().isLoading ||
-                context.watch<ChatViewmodel>().isTipping
-            ? null
-            : () async => await _send(),
-        icon: const Icon(Icons.send),
+    return IconButton(
+      onPressed: context.watch<ChatViewmodel>().isLoading ||
+              context.watch<ChatViewmodel>().isTipping
+          ? null
+          : () async => await _send(),
+      icon: const Icon(
+        Icons.send_rounded,
+        color: AppColors.mint,
       ),
     );
   }

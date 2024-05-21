@@ -6,6 +6,8 @@ abstract class QuestionRepository {
 
   Future<QuerySnapshot<Map<String, dynamic>>> listQuestions(String lessonId);
 
+  Future<QuerySnapshot<Map<String, dynamic>>> listAllQuestions();
+
   Future<void> save(QuestionModel question);
 
   Future<void> delete(String id);

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
 import 'package:statsy/domain/models/answer_model.dart';
@@ -194,26 +193,27 @@ class _AnseredQuestionListTileState extends State<AnseredQuestionListTile> {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: answer != null && answer!.isCorrect
-              ? AppColors.green
-              : AppColors.red,
-        ),
-      ),
       child: ListTile(
         onTap: () => setState(() => expand = !expand),
         contentPadding: const EdgeInsets.only(right: 8, left: 16),
         title: Text(
-          widget.question.content,
+          '"${widget.question.content}"',
           overflow: expand ? null : TextOverflow.ellipsis,
         ),
+        subtitle: answer != null && answer!.isCorrect
+            ? const Text(
+                "Você acertou!",
+                style: TextStyle(
+                  color: AppColors.green,
+                  fontWeight: FontWeight.w600,
+                ),
+              )
+            : null,
         trailing: answer == null
             ? null
             : answer != null && answer!.isCorrect
-                ? const Icon(Icons.check)
-                : const Icon(Icons.close),
+                ? const Icon(Icons.check, color: AppColors.green)
+                : const Icon(Icons.close, color: AppColors.red),
       ),
     );
   }

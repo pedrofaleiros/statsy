@@ -6,6 +6,7 @@ import 'package:statsy/presentation/pages/admin/edit_lessons_page.dart';
 import 'package:statsy/presentation/pages/answer/load_lesson_page.dart';
 import 'package:statsy/presentation/pages/answer/load_question_page.dart';
 import 'package:statsy/presentation/pages/lessons_page.dart';
+import 'package:statsy/presentation/pages/progress_page.dart';
 import 'package:statsy/presentation/pages/splash_page.dart';
 import 'package:statsy/presentation/viewmodel/alternative_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/answer_viewmodel.dart';
@@ -68,6 +69,7 @@ class AppWidget extends StatelessWidget {
       LessonsPage.routeName: (_) => const LessonsPage(),
       LoadLessonPage.routeName: (_) => const LoadLessonPage(),
       LoadQuestionPage.routeName: (_) => const LoadQuestionPage(),
+      ProgressPage.routeName: (_) => const ProgressPage(),
     };
   }
 }

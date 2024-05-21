@@ -13,6 +13,14 @@ class QuestionViewmodel {
     return await _usecase.list(lessonId);
   }
 
+  Future<List<QuestionModel>> listAllQuestions() async {
+    try {
+      return await _usecase.listAll();
+    } catch (_) {
+      return [];
+    }
+  }
+
   Future<void> saveQuestion(QuestionModel question) async {
     final res = await _usecase.save(question);
     if (res == null) {

@@ -50,7 +50,7 @@ class LessonListTile extends StatelessWidget {
       child: const Padding(
         padding: EdgeInsets.all(8.0),
         child: Icon(
-          Icons.school,
+          Icons.school_rounded,
           color: AppColors.white,
         ),
       ),

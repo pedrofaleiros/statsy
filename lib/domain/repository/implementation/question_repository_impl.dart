@@ -26,6 +26,12 @@ class QuestionRepositoryImpl implements QuestionRepository {
   }
 
   @override
+  Future<QuerySnapshot<Map<String, dynamic>>> listAllQuestions() async {
+    final db = FirebaseFirestore.instance;
+    return await db.collection(FireConst.QUESTION).get();
+  }
+
+  @override
   Future<void> save(QuestionModel question) async {
     final db = FirebaseFirestore.instance;
     final ref = db.collection(FireConst.QUESTION).doc(question.id);

@@ -11,14 +11,20 @@ class QuestionUsecase {
     final cache = QuestionsCache.instance.get(lessonId);
     if (cache != null) return cache;
 
-    await Future.delayed(const Duration(seconds: 3));
-
     final data = await _repository.listQuestions(lessonId);
     final list = data.docs
         .map((doc) => QuestionModel.fromMap(doc.data(), doc.id))
         .toList();
 
     QuestionsCache.instance.set(lessonId, list);
+    return list;
+  }
+
+  Future<List<QuestionModel>> listAll() async {
+    final data = await _repository.listAllQuestions();
+    final list = data.docs
+        .map((doc) => QuestionModel.fromMap(doc.data(), doc.id))
+        .toList();
     return list;
   }
 
