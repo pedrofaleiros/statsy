@@ -1,35 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
+import 'package:statsy/domain/models/user_data_model.dart';
 import 'package:statsy/presentation/pages/answer/load_lesson_page.dart';
-import 'package:statsy/presentation/viewmodel/question_viewmodel.dart';
 import 'package:statsy/presentation/widgets/get_level_color.dart';
+import 'package:statsy/presentation/widgets/lesson_subtitle.dart';
 import 'package:statsy/utils/app_colors.dart';
-import 'package:statsy/utils/is_waiting.dart';
 
-class LessonListTile extends StatelessWidget {
+class LessonListTile extends StatefulWidget {
   const LessonListTile({
     super.key,
     required this.lesson,
+    required this.userData,
   });
 
   final LessonModel lesson;
+  final UserDataModel userData;
+
+  @override
+  State<LessonListTile> createState() => _LessonListTileState();
+}
+
+class _LessonListTileState extends State<LessonListTile> {
+  bool get canAccess {
+    return widget.userData.level >= widget.lesson.level;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: "Iniciar lição",
-      showDuration: const Duration(seconds: 1),
-      child: ListTile(
-        onTap: () => Navigator.pushNamed(
-          context,
-          LoadLessonPage.routeName,
-          arguments: lesson,
+    return Card(
+      elevation: canAccess ? 2 : 0,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      child: Tooltip(
+        message: canAccess ? "Iniciar lição" : "",
+        showDuration: const Duration(seconds: 1),
+        child: ListTile(
+          onTap: !canAccess
+              ? null
+              : () => Navigator.pushNamed(
+                    context,
+                    LoadLessonPage.routeName,
+                    arguments: widget.lesson,
+                  ),
+          leading: _leading(widget.lesson),
+          title: _title(widget.lesson),
+          subtitle: !canAccess ? null : LessonSubtitle(lesson: widget.lesson),
+          trailing: !canAccess
+              ? const Icon(
+                  Icons.lock_rounded,
+                  color: AppColors.grey,
+                )
+              : const Icon(Icons.play_arrow_rounded),
         ),
-        leading: _leading(lesson),
-        title: _title(lesson),
-        subtitle: _subtitle(context, lesson),
-        trailing: const Icon(Icons.play_arrow),
       ),
     );
   }
@@ -44,41 +65,13 @@ class LessonListTile extends StatelessWidget {
     );
   }
 
-  Card _leading(LessonModel lesson) {
-    return Card(
-      color: getLevelColor(lesson.level),
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Icon(
-          Icons.school_rounded,
-          color: AppColors.white,
-        ),
+  Widget _leading(LessonModel lesson) {
+    return Padding(
+      padding: const EdgeInsets.all(4),
+      child: Icon(
+        Icons.school_rounded,
+        color: getLevelColor(lesson.level),
       ),
-    );
-  }
-
-  Widget _subtitle(
-    BuildContext context,
-    LessonModel lesson,
-  ) {
-    return FutureBuilder(
-      future: context.read<QuestionViewmodel>().listQuestions(lesson.id),
-      builder: (context, snapshot) {
-        if (isWaiting(snapshot) || !snapshot.hasData) {
-          return const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [SizedBox(height: 8)],
-          );
-        }
-        final questions = snapshot.data!;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            Text("${questions.length} questões"),
-          ],
-        );
-      },
     );
   }
 }

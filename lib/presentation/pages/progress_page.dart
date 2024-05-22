@@ -1,11 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/answer_model.dart';
 import 'package:statsy/domain/models/question_model.dart';
 import 'package:statsy/presentation/viewmodel/answer_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/question_viewmodel.dart';
+import 'package:statsy/presentation/viewmodel/user_data_viewmodel.dart';
 import 'package:statsy/utils/app_colors.dart';
 import 'package:statsy/utils/is_waiting.dart';
 
@@ -59,6 +58,8 @@ class _ProgressPageState extends State<ProgressPage> {
           ? Container()
           : Column(
               children: [
+                const SizedBox(height: 4),
+                const UserDataProgress(),
                 QuestionsProgressWidget(
                   answers: answers ?? [],
                   questions: questions ?? [],
@@ -68,6 +69,50 @@ class _ProgressPageState extends State<ProgressPage> {
                 ),
               ],
             ),
+    );
+  }
+}
+
+class UserDataProgress extends StatelessWidget {
+  const UserDataProgress({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: context.read<UserDataViewmodel>().getUserData(),
+      builder: (context, snapshot) {
+        if (isWaiting(snapshot) || !snapshot.hasData) {
+          return Container();
+        }
+
+        final data = snapshot.data!;
+        return Column(
+          children: [
+            Card(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              child: ListTile(
+                title: const Text('Nivel'),
+                trailing: Text(
+                  '${data.level}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            Card(
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              child: ListTile(
+                title: const Text('Pontos'),
+                trailing: Text(
+                  '${data.points}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

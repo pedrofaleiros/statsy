@@ -5,14 +5,17 @@ import 'package:statsy/domain/repository/implementation/alternative_repository_i
 import 'package:statsy/domain/repository/implementation/answer_repository_impl.dart';
 import 'package:statsy/domain/repository/implementation/lesson_repository_impl.dart';
 import 'package:statsy/domain/repository/implementation/question_repository_impl.dart';
+import 'package:statsy/domain/repository/implementation/user_data_repository_impl.dart';
 import 'package:statsy/domain/repository/lesson_repository.dart';
 import 'package:statsy/domain/repository/question_repository.dart';
+import 'package:statsy/domain/repository/user_data_repository.dart';
 import 'package:statsy/domain/usecase/alternative_usecase.dart';
 import 'package:statsy/domain/usecase/answer_usecase.dart';
 import 'package:statsy/domain/usecase/auth_usecase.dart';
 import 'package:statsy/domain/usecase/chat_usecase.dart';
 import 'package:statsy/domain/usecase/lesson_usecase.dart';
 import 'package:statsy/domain/usecase/question_usecase.dart';
+import 'package:statsy/domain/usecase/user_data_usecase.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -31,6 +34,14 @@ void setupLocator() {
   );
   locator.registerFactory(
     () => QuestionUsecase(locator<QuestionRepository>()),
+  );
+
+  // ---------- USER DATA ----------
+  locator.registerLazySingleton<UserDataRepository>(
+    () => UserDataRepositoryImpl(),
+  );
+  locator.registerFactory(
+    () => UserDataUsecase(locator<UserDataRepository>()),
   );
 
   // ---------- ALTERNATIVE ----------

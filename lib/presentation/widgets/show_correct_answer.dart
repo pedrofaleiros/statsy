@@ -64,13 +64,12 @@ class _CorrectAnswerState extends State<CorrectAnswer> {
       mainAxisSize: MainAxisSize.min,
       children: [
         _listTile(),
-        // if (show)
         Expanded(
           child: Card(
             child: ListView(
               shrinkWrap: true,
               children: [
-                QuestionImage(image: image),
+                ResolutionQuestionImage(image: image),
               ],
             ),
           ),

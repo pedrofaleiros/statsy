@@ -32,15 +32,6 @@ class ViewQuestionPage extends StatefulWidget {
 }
 
 class _ViewQuestionPageState extends State<ViewQuestionPage> {
-  // bool get isAnswerCorrect {
-  //   for (var alt in widget.alts) {
-  //     if (alt.id == widget.answer.alternativeId) {
-  //       return alt.isCorrect;
-  //     }
-  //   }
-  //   return false;
-  // }
-
   String get correctId {
     for (var alt in widget.alts) {
       if (alt.isCorrect) {
@@ -51,21 +42,40 @@ class _ViewQuestionPageState extends State<ViewQuestionPage> {
   }
 
   String? image;
+  String? resolutionImage;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _loadImage(widget.question.id);
+      _loadImageRes(widget.question.id);
     });
   }
 
   void _loadImage(String id) async {
+    if (widget.question.hasImage == null ||
+        widget.question.hasImage! == false) {
+      return;
+    }
+
     try {
       final storage = FirebaseStorage.instance.ref();
-      final pathReference = storage.child("resolution/res$id.png");
+      final pathReference = storage.child("question/$id.png");
+
       final data = await pathReference.getDownloadURL();
       setState(() => image = data);
+    } catch (e) {
+      return;
+    }
+  }
+
+  void _loadImageRes(String id) async {
+    try {
+      final storage = FirebaseStorage.instance.ref();
+      final pathReferenceRes = storage.child("resolution/res$id.png");
+      final dataRes = await pathReferenceRes.getDownloadURL();
+      setState(() => resolutionImage = dataRes);
     } catch (e) {
       return;
     }
@@ -81,11 +91,15 @@ class _ViewQuestionPageState extends State<ViewQuestionPage> {
           child: ListView(
             children: [
               QuestionContent(content: widget.question.content),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: QuestionImage(image: image),
+              ),
               const SizedBox(height: 16),
               ..._alternativesList,
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: QuestionImage(image: image),
+                child: ResolutionQuestionImage(image: resolutionImage),
               ),
               _message,
               _nextButton(context),

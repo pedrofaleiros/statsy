@@ -5,7 +5,6 @@ import 'package:statsy/presentation/pages/admin/edit_question_page.dart';
 import 'package:statsy/presentation/pages/admin/edit_lessons_page.dart';
 import 'package:statsy/presentation/pages/answer/load_lesson_page.dart';
 import 'package:statsy/presentation/pages/answer/load_question_page.dart';
-import 'package:statsy/presentation/pages/lessons_page.dart';
 import 'package:statsy/presentation/pages/progress_page.dart';
 import 'package:statsy/presentation/pages/splash_page.dart';
 import 'package:statsy/presentation/viewmodel/alternative_viewmodel.dart';
@@ -16,6 +15,7 @@ import 'package:statsy/presentation/viewmodel/game_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/lesson_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/question_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/tutor_viewmodel.dart';
+import 'package:statsy/presentation/viewmodel/user_data_viewmodel.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -48,6 +48,9 @@ class AppWidget extends StatelessWidget {
         Provider<AlternativeViewmodel>(
           create: (context) => AlternativeViewmodel(),
         ),
+        Provider<UserDataViewmodel>(
+          create: (context) => UserDataViewmodel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -66,7 +69,6 @@ class AppWidget extends StatelessWidget {
       EditLessonPage.routeName: (_) => const EditLessonPage(),
       EditQuestionPage.routeName: (_) => const EditQuestionPage(),
       EditLessonsPage.routeName: (_) => const EditLessonsPage(),
-      LessonsPage.routeName: (_) => const LessonsPage(),
       LoadLessonPage.routeName: (_) => const LoadLessonPage(),
       LoadQuestionPage.routeName: (_) => const LoadQuestionPage(),
       ProgressPage.routeName: (_) => const ProgressPage(),

@@ -8,6 +8,7 @@ import 'package:statsy/domain/models/question_model.dart';
 import 'package:statsy/presentation/pages/answer/load_question_page.dart';
 import 'package:statsy/presentation/viewmodel/answer_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/tutor_viewmodel.dart';
+import 'package:statsy/presentation/viewmodel/user_data_viewmodel.dart';
 import 'package:statsy/presentation/widgets/alternative_list_tile.dart';
 import 'package:statsy/presentation/widgets/get_level_color.dart';
 import 'package:statsy/presentation/widgets/question_app_bar.dart';
@@ -49,14 +50,17 @@ class _QuestionPageState extends State<QuestionPage> {
 
   Future<void> _answer() async {
     final viewmodel = context.read<AnswerViewmodel>();
+    final udViewmodel = context.read<UserDataViewmodel>();
 
     final alt = widget.alts.firstWhere((element) => element.id == selectedId);
     final correct = widget.alts.firstWhere((element) => element.isCorrect);
 
     viewmodel.onCorrect = () {
       showCorrectAnswer(context, "Acertou!", widget.question.id)
-          .then((value) => setState(() => answered = true));
-      // .then((value) => _next());
+          .then((value) async {
+        setState(() => answered = true);
+        await udViewmodel.addPoints(widget.lesson.points);
+      });
     };
 
     viewmodel.onWrong = () {
@@ -66,7 +70,6 @@ class _QuestionPageState extends State<QuestionPage> {
         correct.text,
         widget.question.id,
       ).then((value) => setState(() => answered = true));
-      // .then((value) => _next());
     };
 
     viewmodel.onError = (message) {
@@ -108,7 +111,6 @@ class _QuestionPageState extends State<QuestionPage> {
       appBar: questionAppBar(
         context,
         getLevelColor(widget.lesson.level),
-        // _helpButton(),
         null,
       ),
       body: SafeArea(

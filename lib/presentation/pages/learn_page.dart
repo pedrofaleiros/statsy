@@ -1,11 +1,46 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:statsy/domain/models/lesson_model.dart';
+import 'package:statsy/domain/models/user_data_model.dart';
 import 'package:statsy/presentation/viewmodel/lesson_viewmodel.dart';
+import 'package:statsy/presentation/viewmodel/user_data_viewmodel.dart';
 import 'package:statsy/presentation/widgets/lesson_list_tile.dart';
-import 'package:statsy/utils/is_waiting.dart';
 
-class LearnPage extends StatelessWidget {
+class LearnPage extends StatefulWidget {
   const LearnPage({super.key});
+
+  @override
+  State<LearnPage> createState() => _LearnPageState();
+}
+
+class _LearnPageState extends State<LearnPage> {
+  List<LessonModel>? lessons;
+  UserDataModel? userData;
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _load();
+    });
+  }
+
+  Future<void> _load() async {
+    final lViewmodel = context.read<LessonViewmodel>();
+    final udViewmodel = context.read<UserDataViewmodel>();
+
+    final list = await lViewmodel.listLessons();
+    final ud = await udViewmodel.getUserData();
+
+    setState(() {
+      lessons = list;
+      userData = ud;
+      loading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,29 +48,29 @@ class LearnPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Aprender"),
       ),
-      body: SafeArea(
-        child: _lessons(context),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() => loading = true);
+          await _load();
+        },
+        child: SafeArea(
+          child: _lessons(),
+        ),
       ),
     );
   }
 
-  Widget _lessons(BuildContext context) {
-    return FutureBuilder(
-      future: context.read<LessonViewmodel>().listLessons(),
-      builder: (context, snapshot) {
-        if (isWaiting(snapshot) || !snapshot.hasData) {
-          return const LinearProgressIndicator();
-        }
+  Widget _lessons() {
+    if (loading || userData == null || lessons == null) {
+      return const LinearProgressIndicator();
+    }
 
-        final lessons = snapshot.data!;
-
-        return ListView.builder(
-          itemCount: lessons.length,
-          itemBuilder: (context, index) => LessonListTile(
-            lesson: lessons[index],
-          ),
-        );
-      },
+    return ListView.builder(
+      itemCount: lessons!.length,
+      itemBuilder: (context, index) => LessonListTile(
+        lesson: lessons![index],
+        userData: userData!,
+      ),
     );
   }
 }

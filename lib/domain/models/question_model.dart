@@ -28,7 +28,7 @@ class QuestionModel {
       content: map['content'],
       lessonId: map['lessonId'],
       imageUrl: map['imageUrl'],
-      hasImage: map['hasImage'] ?? false,
+      hasImage: map['imageUrl'] != null,
     );
   }
 

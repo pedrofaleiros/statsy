@@ -1,18 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
 import 'package:statsy/domain/models/answer_model.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
 import 'package:statsy/domain/models/question_model.dart';
+import 'package:statsy/presentation/pages/answer/finish_page.dart';
 import 'package:statsy/presentation/pages/answer/question_page.dart';
 import 'package:statsy/presentation/pages/answer/view_question_page.dart';
 import 'package:statsy/presentation/viewmodel/alternative_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/answer_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/game_viewmodel.dart';
-import 'package:statsy/presentation/viewmodel/question_viewmodel.dart';
 import 'package:statsy/utils/app_colors.dart';
-import 'package:statsy/utils/is_waiting.dart';
 
 class LoadQuestionPage extends StatefulWidget {
   const LoadQuestionPage({super.key});
@@ -59,7 +57,7 @@ class LoadQuestionPageState extends State<LoadQuestionPage> {
     if (_isLoading) return _loading;
 
     if (question == null || alts == null) {
-      return _finishPage;
+      return FinishPage(lesson: lesson);
     }
 
     if (answer != null) {
@@ -84,60 +82,6 @@ class LoadQuestionPageState extends State<LoadQuestionPage> {
         child: Center(
           child: CircularProgressIndicator(color: AppColors.mint),
         ),
-      ),
-    );
-  }
-
-  Widget get _finishPage {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: AppColors.black,
-        foregroundColor: AppColors.white,
-        leading: Container(),
-        title: Text(lesson.name),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: FutureBuilder(
-              future:
-                  context.read<QuestionViewmodel>().listQuestions(lesson.id),
-              builder: (context, snapshot) {
-                if (isWaiting(snapshot) || !snapshot.hasData) {
-                  return Container();
-                }
-
-                List<QuestionModel> questions = snapshot.data!;
-                return ListView.builder(
-                  itemCount: questions.length,
-                  itemBuilder: (context, index) =>
-                      AnseredQuestionListTile(question: questions[index]),
-                );
-              },
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            width: double.infinity,
-            child: CupertinoButton(
-              color: AppColors.blue,
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                "Finalizar",
-                style: TextStyle(
-                  fontFamily: 'OpenSans',
-                  color: Theme.of(context).brightness == Brightness.dark
-                      ? AppColors.black
-                      : AppColors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  letterSpacing: 1.2,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

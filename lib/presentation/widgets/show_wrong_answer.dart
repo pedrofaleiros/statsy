@@ -83,7 +83,7 @@ class _WrongAnswerState extends State<WrongAnswer> {
                     ),
                   ),
                 ),
-                QuestionImage(image: image),
+                ResolutionQuestionImage(image: image),
               ],
             ),
           ),
