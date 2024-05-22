@@ -32,22 +32,20 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColors.black,
-        foregroundColor: AppColors.white,
-        title: const Text('Chat'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: context.watch<ChatViewmodel>().messages.isEmpty
-                  ? _emptyMessages()
-                  : _messagesList(context),
-            ),
-            _textField(),
-          ],
+      appBar: AppBar(title: const Text('Chat')),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: context.watch<ChatViewmodel>().messages.isEmpty
+                    ? _emptyMessages()
+                    : _messagesList(context),
+              ),
+              _textField(),
+            ],
+          ),
         ),
       ),
     );

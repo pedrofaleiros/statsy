@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.blue,
+        backgroundColor: AppColors.cyan,
         foregroundColor: AppColors.black,
         title: const Text('Perfil'),
         leading: const Icon(Icons.person),
@@ -39,16 +39,42 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  Future<void> _logoutDialog(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Deseja sair da sua conta?'),
+        actionsAlignment: MainAxisAlignment.spaceBetween,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              "Não",
+              style: TextStyle(color: AppColors.red),
+            ),
+          ),
+          TextButton(
+            onPressed: () async => await context
+                .read<AuthViewmodel>()
+                .logout()
+                .then((value) => Navigator.pop(context)),
+            child: const Text(
+              "Sim",
+              style: TextStyle(color: AppColors.blue),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _logout(BuildContext context) => Card(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: ListTile(
-          onTap: () async {
-            await context.read<AuthViewmodel>().logout();
-          },
+          onTap: () async => await _logoutDialog(context),
           title: const Text("Sair"),
           trailing: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 14,
+            Icons.logout,
             color: AppColors.grey,
           ),
         ),
@@ -60,8 +86,7 @@ class ProfilePage extends StatelessWidget {
           onTap: () => Navigator.pushNamed(context, ProgressPage.routeName),
           title: const Text("Progresso"),
           trailing: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            size: 14,
+            Icons.insert_chart_outlined_rounded,
             color: AppColors.grey,
           ),
         ),

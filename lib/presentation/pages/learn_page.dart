@@ -7,6 +7,7 @@ import 'package:statsy/domain/models/user_data_model.dart';
 import 'package:statsy/presentation/viewmodel/lesson_viewmodel.dart';
 import 'package:statsy/presentation/viewmodel/user_data_viewmodel.dart';
 import 'package:statsy/presentation/widgets/lesson_list_tile.dart';
+import 'package:statsy/utils/app_colors.dart';
 
 class LearnPage extends StatefulWidget {
   const LearnPage({super.key});
@@ -46,6 +47,8 @@ class _LearnPageState extends State<LearnPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: AppColors.black,
+        backgroundColor: AppColors.orange,
         title: const Text("Aprender"),
       ),
       body: RefreshIndicator(
