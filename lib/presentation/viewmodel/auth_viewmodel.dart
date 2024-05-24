@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:statsy/domain/models/user_data_model.dart';
 import 'package:statsy/domain/usecase/auth_usecase.dart';
+import 'package:statsy/domain/usecase/user_data_usecase.dart';
 import 'package:statsy/utils/service_locator.dart';
 
 class AuthViewmodel extends ChangeNotifier {
   final _usecase = locator<AuthUsecase>();
+  final _userDataUsecase = locator<UserDataUsecase>();
 
   Function(String? message)? onError;
   Function()? onSuccess;
@@ -46,11 +49,30 @@ class AuthViewmodel extends ChangeNotifier {
     setIsLoading(false);
   }
 
-  Future<void> createUser(String email, String password) async {
+  Future<void> createUser({
+    required String email,
+    required String password,
+    required String username,
+  }) async {
     setIsLoading(true);
     try {
-      final response = await _usecase.createUser(email, password);
+      final response = await _usecase.createUser(
+        email: email,
+        username: username,
+        password: password,
+      );
+
       if (response == null) {
+        final userId = FirebaseAuth.instance.currentUser!.uid;
+
+        final userData = UserDataModel(
+          username: username,
+          userId: userId,
+          level: 1,
+          points: 0,
+        );
+        _userDataUsecase.save(userData);
+
         onSuccess?.call();
       } else {
         onError?.call(response);
@@ -62,9 +84,18 @@ class AuthViewmodel extends ChangeNotifier {
   }
 
   Future<void> logout() async {
-    // GoogleSignIn googleSignIn = GoogleSignIn();
-    // await googleSignIn.signOut();
     await FirebaseAuth.instance.signOut();
+  }
+
+  Future<void> passwordRecovery(String email) async {
+    setIsLoading(true);
+    try {
+      await _usecase.passwordRecovery(email);
+      onSuccess?.call();
+    } on FirebaseAuthException catch (e) {
+      _handlePasswordRecoveryException(e);
+    }
+    setIsLoading(false);
   }
 
   void _handleGoogleAuthException(FirebaseAuthException e) {
@@ -82,6 +113,16 @@ class AuthViewmodel extends ChangeNotifier {
       onError?.call("Código de verificação inválido.");
     } else if (e.code == 'invalid-verification-id') {
       onError?.call("Código de verificação inválido.");
+    }
+  }
+
+  void _handlePasswordRecoveryException(FirebaseAuthException e) {
+    if (e.code == 'invalid-email') {
+      onError?.call("Email não cadastrado");
+    } else if (e.code == 'user-not-found') {
+      onError?.call("Email inválido");
+    } else {
+      onSuccess?.call();
     }
   }
 

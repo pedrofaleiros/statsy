@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:statsy/presentation/pages/password_recovery_page.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
 import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
 import 'package:statsy/utils/app_colors.dart';
@@ -39,149 +39,161 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        decoration: _boxDecoration,
-        margin: const EdgeInsets.all(16),
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _emailTextField,
-            const SizedBox(height: 2),
-            _passwordTextField,
-            const SizedBox(height: 16),
-            _loginButton,
-            const SizedBox(height: 8),
-            _divider,
-            // const SizedBox(height: 8),
-            // const GoogleSignInButton(),
-            const SizedBox(height: 16),
-            _gotoSignUp,
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget get _loginButton {
-    return SizedBox(
-      width: double.infinity,
-      child: CupertinoButton(
-        color: _getButtonColor(),
-        onPressed: context.watch<AuthViewmodel>().isLoading ? null : _login,
-        child: Text(
-          'Login',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            color: MediaQuery.of(context).platformBrightness == Brightness.dark
-                ? AppColors.white
-                : AppColors.black,
+    return Container(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _emailTextField(),
+          _box(8),
+          _passwordTextField(),
+          _box(16),
+          _loginButton(),
+          _box(32),
+          _divider(),
+          _box(16),
+          Row(
+            children: [
+              _passwordRecoveryButton(),
+              Card(child: _signupButton()),
+            ],
           ),
-        ),
+        ],
       ),
     );
   }
 
-  Widget get _emailTextField {
-    return TextField(
-      textInputAction: TextInputAction.next,
-      controller: _emailController,
-      decoration: InputDecoration(
-        border: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(8),
-            topRight: Radius.circular(8),
-            bottomLeft: Radius.circular(2),
-            bottomRight: Radius.circular(2),
-          ),
-        ),
-        filled: true,
-        fillColor: MediaQuery.of(context).platformBrightness == Brightness.dark
-            ? AppColors.black.withOpacity(0.75)
-            : AppColors.white.withOpacity(0.75),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-        hintText: 'Email',
+  Widget _box(double height) => SizedBox(height: height);
+
+  Widget _passwordRecoveryButton() {
+    return TextButton(
+      onPressed: () =>
+          Navigator.pushNamed(context, PasswordRecoveryPage.routeName),
+      child: const Text(
+        'Esqueci minha senha',
+        style: TextStyle(color: AppColors.grey),
       ),
     );
   }
 
-  Widget get _passwordTextField {
-    return TextField(
-      obscureText: _obscureText,
-      textInputAction: TextInputAction.done,
-      controller: _passwordController,
-      decoration: InputDecoration(
-        suffixIcon: _visibilityButton(),
-        border: const OutlineInputBorder(
-          borderSide: BorderSide.none,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(2),
-            topRight: Radius.circular(2),
-            bottomLeft: Radius.circular(8),
-            bottomRight: Radius.circular(8),
-          ),
-        ),
-        filled: true,
-        fillColor: MediaQuery.of(context).platformBrightness == Brightness.dark
-            ? AppColors.black.withOpacity(0.75)
-            : AppColors.white.withOpacity(0.75),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-        hintText: 'Senha',
-      ),
-    );
-  }
-
-  Widget _visibilityButton() {
-    return IconButton(
-      onPressed: () => setState(() => _obscureText = !_obscureText),
-      icon: Icon(
-        _obscureText ? Icons.visibility_off : Icons.visibility,
-      ),
-    );
-  }
-
-  Widget get _gotoSignUp {
-    return TextButton.icon(
+  Widget _signupButton() {
+    return TextButton(
       onPressed: () {
         widget.pageController.nextPage(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
         );
       },
-      icon: const Icon(Icons.help_outline, color: AppColors.black, size: 16),
-      label: const Text(
-        "Não tenho uma conta",
-        style: TextStyle(color: AppColors.black),
+      child: const Text(
+        'Não tenho uma conta',
+        style: TextStyle(color: AppColors.grey),
       ),
     );
   }
 
-  Widget get _divider => Divider(
-        color: AppColors.white.withOpacity(0.5),
-        height: 16,
-        thickness: 0.5,
-        indent: 64,
-        endIndent: 64,
-      );
+  Widget _divider() {
+    return const Row(children: [
+      Expanded(child: Divider()),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 32),
+        child: Text("ou"),
+      ),
+      Expanded(child: Divider()),
+    ]);
+  }
 
-  Color _getButtonColor() =>
-      MediaQuery.of(context).platformBrightness == Brightness.dark
-          ? AppColors.black.withOpacity(0.75 / 2)
-          : AppColors.white.withOpacity(0.75 / 2);
-
-  BoxDecoration get _boxDecoration => BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.yellow,
-            AppColors.orange,
-            AppColors.pink,
-          ],
+  Widget _loginButton() {
+    bool loading = context.watch<AuthViewmodel>().isLoading;
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor:
+              MaterialStatePropertyAll(loading ? null : AppColors.blue),
+          padding: const MaterialStatePropertyAll(
+            EdgeInsets.symmetric(
+              horizontal: 8,
+              vertical: 12,
+            ),
+          ),
         ),
-      );
+        onPressed: loading ? null : _login,
+        child: loading ? _loading() : _loginButtonText(),
+      ),
+    );
+  }
+
+  Widget _loginButtonText() {
+    return Text(
+      'Entrar',
+      style: TextStyle(
+        fontFamily: 'OpenSans',
+        fontSize: 18,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? AppColors.black
+            : AppColors.white,
+        fontWeight: FontWeight.w500,
+        letterSpacing: 1.2,
+      ),
+    );
+  }
+
+  Widget _loading() {
+    return const SizedBox(
+      height: 24,
+      width: 24,
+      child: CircularProgressIndicator(
+        strokeWidth: 2,
+        color: AppColors.white,
+      ),
+    );
+  }
+
+  Widget _emailTextField() {
+    return TextField(
+      controller: _emailController,
+      textInputAction: TextInputAction.next,
+      decoration: const InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.blue,
+            width: 2,
+          ),
+        ),
+        hintText: 'Digite seu email',
+      ),
+    );
+  }
+
+  Widget _passwordTextField() {
+    return TextField(
+      onSubmitted: (value) {
+        if (!context.read<AuthViewmodel>().isLoading) _login();
+      },
+      obscureText: _obscureText,
+      controller: _passwordController,
+      textInputAction: TextInputAction.done,
+      decoration: InputDecoration(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        suffixIcon: IconButton(
+          onPressed: () => setState(() => _obscureText = !_obscureText),
+          icon: Icon(
+            _obscureText
+                ? Icons.visibility_off_rounded
+                : Icons.visibility_rounded,
+          ),
+        ),
+        border: const OutlineInputBorder(),
+        focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.blue,
+            width: 2,
+          ),
+        ),
+        hintText: 'Digite sua senha',
+      ),
+    );
+  }
 }

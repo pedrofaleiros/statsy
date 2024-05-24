@@ -5,10 +5,10 @@ XXX Animação quando tiver no chat
 XXX Botão de responder menor e redondo
 XXX Tirar adm
 XXX mostrar quantos pontos ganhou com a lissao
+XXX recuperar senha e redefinir senha
 
 Listar usuário com mais pontos
 
 Colocação dos usuários
 
-recuperar senha e redefinir senha
-texto formulario login
+Texto formulario login

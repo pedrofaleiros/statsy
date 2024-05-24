@@ -28,9 +28,11 @@ class UserDataViewmodel {
     }
   }
 
-  Future<void> createUserData() async {
+  Future<void> createUserData(String username) async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
+
     final userData = UserDataModel(
+      username: username,
       userId: userId,
       level: 1,
       points: 0,

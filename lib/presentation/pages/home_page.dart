@@ -1,10 +1,8 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:statsy/presentation/pages/chat_page.dart';
 import 'package:statsy/presentation/pages/learn_page.dart';
 import 'package:statsy/presentation/pages/profile_page.dart';
-import 'package:statsy/presentation/viewmodel/user_data_viewmodel.dart';
 import 'package:statsy/utils/app_colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,16 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final viewmodel = context.read<UserDataViewmodel>();
-      final userData = await viewmodel.getUserData();
-      if (userData == null) await viewmodel.createUserData();
-    });
-  }
-
   int _index = 0;
 
   final tabs = [

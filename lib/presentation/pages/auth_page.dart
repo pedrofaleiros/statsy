@@ -20,20 +20,14 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            PageView(
-              controller: _pageController,
-              children: [
-                LoginForm(pageController: _pageController),
-                SignUpForm(pageController: _pageController),
-              ],
-            ),
-            const LoadingStackWidget(),
-            // _googleButton,
-          ],
-        ),
+      appBar: AppBar(),
+      body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: _pageController,
+        children: [
+          LoginForm(pageController: _pageController),
+          SignUpForm(pageController: _pageController),
+        ],
       ),
     );
   }
