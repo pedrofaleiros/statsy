@@ -45,23 +45,33 @@ class _LoginFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _emailTextField(),
-          _box(8),
-          _usernameTextField(),
-          _box(8),
-          _passwordTextField(),
-          _box(16),
-          _signUpButton(),
-          _box(32),
-          _divider(),
-          _box(16),
-          _loginButton(),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Insira seus dados para criar uma conta',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            _box(32),
+            _emailTextField(),
+            _box(8),
+            _usernameTextField(),
+            _box(8),
+            _passwordTextField(),
+            _box(16),
+            _signUpButton(),
+            _box(32),
+            _divider(),
+            _box(16),
+            _loginButton(),
+          ],
+        ),
       ),
     );
   }
@@ -105,7 +115,7 @@ class _LoginFormState extends State<SignUpForm> {
           padding: MaterialStatePropertyAll(
             EdgeInsets.symmetric(
               horizontal: 8,
-              vertical: 12,
+              vertical: 8,
             ),
           ),
         ),

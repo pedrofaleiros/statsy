@@ -39,26 +39,36 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _emailTextField(),
-          _box(8),
-          _passwordTextField(),
-          _box(16),
-          _loginButton(),
-          _box(32),
-          _divider(),
-          _box(16),
-          Row(
-            children: [
-              _passwordRecoveryButton(),
-              Card(child: _signupButton()),
-            ],
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Insira seus dados para entrar na conta',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            _box(32),
+            _emailTextField(),
+            _box(8),
+            _passwordTextField(),
+            _box(16),
+            _loginButton(),
+            _box(32),
+            _divider(),
+            _box(16),
+            Row(
+              children: [
+                _passwordRecoveryButton(),
+                Card(child: _signupButton()),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -113,7 +123,7 @@ class _LoginFormState extends State<LoginForm> {
           padding: const MaterialStatePropertyAll(
             EdgeInsets.symmetric(
               horizontal: 8,
-              vertical: 12,
+              vertical: 8,
             ),
           ),
         ),
