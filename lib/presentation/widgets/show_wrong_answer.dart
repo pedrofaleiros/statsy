@@ -1,5 +1,4 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:statsy/presentation/widgets/question_image.dart';
 import 'package:statsy/utils/app_colors.dart';
@@ -114,14 +113,22 @@ class _WrongAnswerState extends State<WrongAnswer> {
     return Container(
       padding: const EdgeInsets.all(8),
       width: double.infinity,
-      child: CupertinoButton(
-        color: AppColors.red,
+      child: ElevatedButton(
+        style: const ButtonStyle(
+          padding: MaterialStatePropertyAll(
+            EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          ),
+          backgroundColor: MaterialStatePropertyAll(AppColors.red),
+        ),
         onPressed: () => Navigator.pop(context),
-        child: const Text(
+        child: Text(
           'Continuar',
           style: TextStyle(
-            color: AppColors.black,
             fontWeight: FontWeight.w500,
+            fontSize: 18,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? AppColors.black
+                : AppColors.white,
           ),
         ),
       ),

@@ -62,7 +62,7 @@ class _LessonSubtitleState extends State<LessonSubtitle> {
   @override
   Widget build(BuildContext context) {
     if (loading || questions == null) {
-      return const SizedBox(height: 40);
+      return Container();
     }
 
     return Column(

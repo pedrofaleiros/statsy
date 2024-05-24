@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  int _index = 1;
+  int _index = 0;
 
   final tabs = [
     const LearnPage(),
@@ -50,16 +50,12 @@ class _HomePageState extends State<HomePage> {
       icon: SizedBox(
         height: 32,
         width: 32,
-        child: FlareActor(
-          'assets/animations/ia.flr',
-        ),
+        child: FlareActor('assets/animations/ia.flr'),
       ),
       activeIcon: SizedBox(
         height: 48,
         width: 48,
-        child: FlareActor(
-          'assets/animations/ia.flr',
-        ),
+        child: FlareActor('assets/animations/ia.flr'),
       ),
       label: "Chat",
     ),

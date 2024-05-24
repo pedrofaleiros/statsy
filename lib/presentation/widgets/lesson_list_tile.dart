@@ -29,7 +29,6 @@ class _LessonListTileState extends State<LessonListTile> {
   Widget build(BuildContext context) {
     return Card(
       elevation: canAccess ? 2 : 0,
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       child: Tooltip(
         message: canAccess ? "Iniciar lição" : "",
         showDuration: const Duration(seconds: 1),

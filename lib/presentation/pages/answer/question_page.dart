@@ -1,5 +1,4 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
@@ -150,8 +149,15 @@ class _QuestionPageState extends State<QuestionPage> {
   Widget get _answerButton {
     return SizedBox(
       width: double.infinity,
-      child: CupertinoButton(
-        color: getLevelColor(widget.lesson.level),
+      child: ElevatedButton(
+        style: ButtonStyle(
+          padding: const MaterialStatePropertyAll(
+            EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          ),
+          backgroundColor: MaterialStatePropertyAll(
+            selectedId == "" ? null : getLevelColor(widget.lesson.level),
+          ),
+        ),
         onPressed: selectedId == ""
             ? null
             : answered

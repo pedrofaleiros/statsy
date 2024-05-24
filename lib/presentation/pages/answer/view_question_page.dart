@@ -1,5 +1,4 @@
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:statsy/domain/models/alternative_model.dart';
 import 'package:statsy/domain/models/answer_model.dart';
@@ -103,6 +102,7 @@ class _ViewQuestionPageState extends State<ViewQuestionPage> {
               ),
               _message,
               _nextButton(context),
+              const SizedBox(height: 8),
             ],
           ),
         ),
@@ -158,8 +158,14 @@ class _ViewQuestionPageState extends State<ViewQuestionPage> {
   Widget _nextButton(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      child: CupertinoButton(
-        color: getLevelColor(widget.lesson.level),
+      child: ElevatedButton(
+        style: ButtonStyle(
+          padding: const MaterialStatePropertyAll(
+            EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          ),
+          backgroundColor:
+              MaterialStatePropertyAll(getLevelColor(widget.lesson.level)),
+        ),
         onPressed: () => _next(context),
         child: Text(
           "Continuar",
