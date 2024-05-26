@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/pages/password_recovery_page.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
@@ -45,6 +46,8 @@ class _LoginFormState extends State<LoginForm> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            _logo(),
+            _box(16),
             const Text(
               'Insira seus dados para entrar na conta',
               style: TextStyle(
@@ -66,6 +69,35 @@ class _LoginFormState extends State<LoginForm> {
                 _passwordRecoveryButton(),
                 Card(child: _signupButton()),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _logo() {
+    return Card(
+      elevation: 0,
+      color: AppColors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(
+              'assets/images/logo.svg',
+              width: 64,
+              height: 64,
+            ),
+            const Text(
+              'Statsy',
+              style: TextStyle(
+                fontFamily: 'OrelegaOne',
+                color: AppColors.dark,
+                fontSize: 48,
+              ),
             ),
           ],
         ),

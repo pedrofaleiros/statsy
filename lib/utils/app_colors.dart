@@ -20,5 +20,6 @@ class AppColors {
   static const grey6 = CupertinoColors.systemGrey6;
 
   static const black = Color(0xff000000);
+  static const dark = Color(0xff1c1c1e);
   static const white = Color(0xffffffff);
 }

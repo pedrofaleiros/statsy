@@ -27,6 +27,21 @@ dependencies:
   flare_flutter: ^3.0.2
   firebase_storage: ^11.6.11
 
+  flutter_native_splash: ^2.4.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_native_splash:
+  color: "#ffffff"
+  image: "assets/images/icon-android.png"
+  android: true
+  ios: true
+
+flutter_icons:
+  image_path: "assets/images/icon.png"
+  android: "launcher_icon"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/icon-android.png"
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -38,10 +53,14 @@ flutter:
 
   assets:
     - assets/images/google_icon.svg
+    - assets/images/logo.svg
     - .env
     - assets/animations/ia.flr
 
   fonts:
+    - family: OrelegaOne
+      fonts:
+        - asset: assets/fonts/OrelegaOne-Regular.ttf
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Black.ttf
