@@ -45,32 +45,41 @@ class _LoginFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Insira seus dados para criar uma conta',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        widget.pageController.previousPage(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      },
+      child: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Insira seus dados para criar uma conta',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-            _box(32),
-            _emailTextField(),
-            _box(8),
-            _usernameTextField(),
-            _box(8),
-            _passwordTextField(),
-            _box(16),
-            _signUpButton(),
-            _box(32),
-            _divider(),
-            _box(16),
-            _loginButton(),
-          ],
+              _box(32),
+              _emailTextField(),
+              _box(8),
+              _usernameTextField(),
+              _box(8),
+              _passwordTextField(),
+              _box(16),
+              _signUpButton(),
+              _box(32),
+              _divider(),
+              _box(16),
+              _loginButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -79,16 +88,18 @@ class _LoginFormState extends State<SignUpForm> {
   Widget _box(double height) => SizedBox(height: height);
 
   Widget _loginButton() {
-    return TextButton(
-      onPressed: () {
-        widget.pageController.previousPage(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      },
-      child: Text(
-        'Já tenho uma conta',
-        style: TextStyle(color: AppColors.grey),
+    return Card(
+      child: TextButton(
+        onPressed: () {
+          widget.pageController.previousPage(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
+        child: Text(
+          'Já tenho uma conta',
+          style: TextStyle(color: AppColors.grey),
+        ),
       ),
     );
   }

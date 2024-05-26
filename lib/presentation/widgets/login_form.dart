@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/pages/password_recovery_page.dart';
@@ -61,15 +62,11 @@ class _LoginFormState extends State<LoginForm> {
             _passwordTextField(),
             _box(16),
             _loginButton(),
-            _box(32),
+            _passwordRecoveryButton(),
+            _box(16),
             _divider(),
             _box(16),
-            Row(
-              children: [
-                _passwordRecoveryButton(),
-                Card(child: _signupButton()),
-              ],
-            ),
+            _signupButton(),
           ],
         ),
       ),
@@ -112,23 +109,25 @@ class _LoginFormState extends State<LoginForm> {
       onPressed: () =>
           Navigator.pushNamed(context, PasswordRecoveryPage.routeName),
       child: const Text(
-        'Esqueci minha senha',
+        'Recuperar senha',
         style: TextStyle(color: AppColors.grey),
       ),
     );
   }
 
   Widget _signupButton() {
-    return TextButton(
-      onPressed: () {
-        widget.pageController.nextPage(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      },
-      child: const Text(
-        'Não tenho uma conta',
-        style: TextStyle(color: AppColors.grey),
+    return Card(
+      child: TextButton(
+        onPressed: () {
+          widget.pageController.nextPage(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
+        child: const Text(
+          'Não tenho uma conta',
+          style: TextStyle(color: AppColors.grey),
+        ),
       ),
     );
   }
