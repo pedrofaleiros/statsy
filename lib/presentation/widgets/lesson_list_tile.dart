@@ -28,7 +28,7 @@ class _LessonListTileState extends State<LessonListTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: canAccess ? 2 : 0,
+      elevation: canAccess ? 1 : 0,
       child: Tooltip(
         message: canAccess ? "Iniciar lição" : "",
         showDuration: const Duration(seconds: 1),

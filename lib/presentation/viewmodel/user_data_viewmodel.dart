@@ -53,6 +53,10 @@ class UserDataViewmodel {
     }
   }
 
+  Future<List<UserDataModel>> listAll() async {
+    return await _usecase.listAll();
+  }
+
   Future<void> levelUp(int level) async {
     final userData = await getUserData();
     if (userData != null && userData.level < level) {

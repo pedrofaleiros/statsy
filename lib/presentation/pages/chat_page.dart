@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/chat_viewmodel.dart';
-import 'package:statsy/presentation/widgets/aura_widget.dart';
+import 'package:statsy/presentation/widgets/app_bar_title.dart';
+import 'package:statsy/presentation/widgets/app_logo.dart';
 import 'package:statsy/presentation/widgets/message_card.dart';
 import 'package:statsy/presentation/widgets/show_message_snackbar.dart';
 import 'package:statsy/utils/app_colors.dart';
@@ -32,7 +33,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
+      appBar: AppBar(title: const AppBarTitle(text: 'Chat')),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -66,17 +67,11 @@ class _ChatPageState extends State<ChatPage> {
     return ListView(
       shrinkWrap: true,
       children: [
-        const AuraWidget(size: 96),
+        const AppLogo(size: 96),
         const SizedBox(height: 16),
         const Align(
           alignment: Alignment.center,
-          child: Text(
-            'Como posso te ajudar?',
-            style: TextStyle(
-              fontSize: 28,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          child: AppBarTitle(text: "Como posso te ajudar?"),
         ),
         const SizedBox(height: 16),
         _hintItem("Me explique permutação."),
@@ -100,7 +95,6 @@ class _ChatPageState extends State<ChatPage> {
           Expanded(
             child: TextField(
               textInputAction: TextInputAction.newline,
-              // onSubmitted: (value) async => await _send(),
               maxLines: null,
               keyboardType: TextInputType.multiline,
               controller: controller,

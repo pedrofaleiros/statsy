@@ -54,8 +54,8 @@ flutter:
   assets:
     - assets/images/google_icon.svg
     - assets/images/logo.svg
+    - assets/images/logo-gray.svg
     - .env
-    - assets/animations/ia.flr
 
   fonts:
     - family: OrelegaOne

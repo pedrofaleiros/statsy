@@ -19,4 +19,12 @@ class UserDataUsecase {
     await _repository.save(userData);
     return null;
   }
+
+  Future<List<UserDataModel>> listAll() async {
+    final data = await _repository.listAllUsers();
+    final list = data.docs
+        .map((doc) => UserDataModel.fromMap(doc.data(), doc.id))
+        .toList();
+    return list;
+  }
 }

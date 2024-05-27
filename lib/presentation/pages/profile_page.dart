@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:statsy/presentation/pages/admin/edit_lessons_page.dart';
 import 'package:statsy/presentation/pages/progress_page.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
+import 'package:statsy/presentation/widgets/app_bar_title.dart';
 import 'package:statsy/utils/app_colors.dart';
 import 'package:statsy/utils/is_admin.dart';
 
@@ -13,10 +14,8 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.cyan,
-        foregroundColor: AppColors.black,
-        title: const Text('Perfil'),
-        leading: const Icon(Icons.person),
+        title: const AppBarTitle(text: 'Perfil'),
+        leading: const Icon(Icons.person_rounded),
         actions: [
           if (isAdmin()) _editLessons(context),
         ],

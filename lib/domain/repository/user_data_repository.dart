@@ -5,4 +5,6 @@ abstract class UserDataRepository {
   Future<void> save(UserDataModel userData);
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserData(String id);
+
+  Future<QuerySnapshot<Map<String, dynamic>>> listAllUsers();
 }

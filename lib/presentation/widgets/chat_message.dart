@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:statsy/presentation/widgets/aura_widget.dart';
+import 'package:statsy/utils/app_colors.dart';
 
 class ChatMessage extends StatelessWidget {
   const ChatMessage({super.key, required this.content});
@@ -42,10 +42,7 @@ class ChatMessage extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: MarkdownBody(
-                  data: content!,
-                  // selectable: true,
-                ),
+                child: MarkdownBody(data: content!),
               ),
             ),
           );
@@ -53,10 +50,12 @@ class ChatMessage extends StatelessWidget {
 
   Widget get _loading {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(32),
       width: double.infinity,
       child: const Center(
-        child: AuraWidget(size: 96),
+        child: CircularProgressIndicator(
+          color: AppColors.orange,
+        ),
       ),
     );
   }

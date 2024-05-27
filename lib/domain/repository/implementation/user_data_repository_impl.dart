@@ -17,4 +17,13 @@ class UserDataRepositoryImpl implements UserDataRepository {
     final ref = db.collection(FireConst.USER_DATA).doc(userData.userId);
     await ref.set(userData.toMap());
   }
+
+  @override
+  Future<QuerySnapshot<Map<String, dynamic>>> listAllUsers() async {
+    final db = FirebaseFirestore.instance;
+    return await db
+        .collection(FireConst.USER_DATA)
+        .orderBy("points", descending: true)
+        .get();
+  }
 }

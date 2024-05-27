@@ -1,8 +1,8 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:statsy/presentation/pages/chat_page.dart';
 import 'package:statsy/presentation/pages/learn_page.dart';
 import 'package:statsy/presentation/pages/profile_page.dart';
+import 'package:statsy/presentation/widgets/app_logo.dart';
 import 'package:statsy/utils/app_colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,28 +23,14 @@ class _HomePageState extends State<HomePage> {
     const ProfilePage(),
   ];
 
-  final colors = [
-    AppColors.orange,
-    AppColors.mint,
-    AppColors.cyan,
-  ];
-
   final items = const [
     BottomNavigationBarItem(
       icon: Icon(Icons.school_rounded),
       label: "Aprender",
     ),
     BottomNavigationBarItem(
-      icon: SizedBox(
-        height: 32,
-        width: 32,
-        child: FlareActor('assets/animations/ia.flr'),
-      ),
-      activeIcon: SizedBox(
-        height: 48,
-        width: 48,
-        child: FlareActor('assets/animations/ia.flr'),
-      ),
+      icon: AppLogoGray(size: 24),
+      activeIcon: AppLogo(size: 24),
       label: "Chat",
     ),
     BottomNavigationBarItem(
@@ -59,10 +45,10 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
         type: BottomNavigationBarType.fixed,
-        showSelectedLabels: true,
         selectedFontSize: 12,
+        showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: colors[_index],
+        selectedItemColor: AppColors.orange,
         unselectedItemColor: AppColors.grey,
         onTap: (value) => setState(() => _index = value),
         currentIndex: _index,
