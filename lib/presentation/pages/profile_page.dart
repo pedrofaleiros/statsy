@@ -1,11 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/pages/admin/edit_lessons_page.dart';
 import 'package:statsy/presentation/pages/progress_page.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
+import 'package:statsy/presentation/viewmodel/user_data_viewmodel.dart';
 import 'package:statsy/presentation/widgets/app_bar_title.dart';
 import 'package:statsy/utils/app_colors.dart';
 import 'package:statsy/utils/is_admin.dart';
+import 'package:statsy/utils/is_waiting.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -43,15 +46,15 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const AppBarTitle(text: 'Perfil'),
-        leading: const Icon(Icons.person_rounded),
-        actions: [
-          if (isAdmin()) _editLessons(context),
-        ],
+        title: ListTile(
+          title: _username(context),
+          subtitle: Text(FirebaseAuth.instance.currentUser?.email ?? ""),
+        ),
+        actions: [if (isAdmin()) _editLessons(context)],
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 16),
           child: Column(
             children: [
               _progress(context),
@@ -62,6 +65,22 @@ class ProfilePage extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _username(BuildContext context) {
+    return FutureBuilder(
+      future: context.read<UserDataViewmodel>().getUserData(),
+      builder: (context, snapshot) {
+        if (isWaiting(snapshot) || !snapshot.hasData) {
+          return Container();
+        }
+
+        final data = snapshot.data!;
+        final username = data.username;
+
+        return AppBarTitle(text: username);
+      },
     );
   }
 
