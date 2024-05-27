@@ -10,34 +10,6 @@ import 'package:statsy/utils/is_admin.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const AppBarTitle(text: 'Perfil'),
-        leading: const Icon(Icons.person_rounded),
-        actions: [
-          if (isAdmin()) _editLessons(context),
-        ],
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _logout(context),
-            _progress(context),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _editLessons(BuildContext context) {
-    return IconButton(
-      onPressed: () => Navigator.pushNamed(context, EditLessonsPage.routeName),
-      icon: const Icon(Icons.edit),
-    );
-  }
-
   Future<void> _logoutDialog(BuildContext context) async {
     showDialog(
       context: context,
@@ -67,27 +39,54 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _logout(BuildContext context) => Card(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: ListTile(
-          onTap: () async => await _logoutDialog(context),
-          title: const Text("Sair"),
-          trailing: const Icon(
-            Icons.logout,
-            color: AppColors.grey,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const AppBarTitle(text: 'Perfil'),
+        leading: const Icon(Icons.person_rounded),
+        actions: [
+          if (isAdmin()) _editLessons(context),
+        ],
+      ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              _progress(context),
+              const Divider(height: 0, indent: 16, endIndent: 16),
+              _logout(context),
+              const Divider(height: 0, indent: 16, endIndent: 16),
+            ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _editLessons(BuildContext context) {
+    return IconButton(
+      onPressed: () => Navigator.pushNamed(context, EditLessonsPage.routeName),
+      icon: const Icon(Icons.edit),
+    );
+  }
+
+  Widget _logout(BuildContext context) => ListTile(
+        onTap: () async => await _logoutDialog(context),
+        title: const Text("Sair"),
+        trailing: const Icon(
+          Icons.logout,
+          color: AppColors.grey,
         ),
       );
 
-  Widget _progress(BuildContext context) => Card(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: ListTile(
-          onTap: () => Navigator.pushNamed(context, ProgressPage.routeName),
-          title: const Text("Progresso"),
-          trailing: const Icon(
-            Icons.insert_chart_outlined_rounded,
-            color: AppColors.grey,
-          ),
+  Widget _progress(BuildContext context) => ListTile(
+        onTap: () => Navigator.pushNamed(context, ProgressPage.routeName),
+        title: const Text("Progresso"),
+        trailing: const Icon(
+          Icons.insert_chart_outlined_rounded,
+          color: AppColors.grey,
         ),
       );
 }

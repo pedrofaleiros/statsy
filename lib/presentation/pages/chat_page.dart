@@ -118,7 +118,7 @@ class _ChatPageState extends State<ChatPage> {
           : () async => await _send(),
       icon: const Icon(
         Icons.send_rounded,
-        color: AppColors.mint,
+        color: AppColors.orange,
       ),
     );
   }
