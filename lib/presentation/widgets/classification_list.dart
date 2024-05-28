@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/user_data_viewmodel.dart';
 import 'package:statsy/presentation/widgets/app_bar_title.dart';
-import 'package:statsy/presentation/widgets/app_logo.dart';
-import 'package:statsy/presentation/widgets/get_level_color.dart';
+import 'package:statsy/presentation/widgets/user_classification_tile.dart';
 import 'package:statsy/utils/is_waiting.dart';
 
 class ClassificationList extends StatelessWidget {
@@ -14,8 +13,6 @@ class ClassificationList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
-
     return FutureBuilder(
       future: context.read<UserDataViewmodel>().listAll(),
       builder: (context, snapshot) {
@@ -24,33 +21,16 @@ class ClassificationList extends StatelessWidget {
         }
 
         final data = snapshot.data!;
+        final userId = FirebaseAuth.instance.currentUser?.uid ?? "";
+
         return Expanded(
           child: ListView(
             children: [
-              const ListTile(
-                title: AppBarTitle(text: 'Classificação'),
-                trailing: AppLogo(size: 24),
-              ),
-              const ListTile(
-                leading: Text('Nível'),
-                trailing: Text('Pontos'),
-              ),
-              for (var p in data)
-                ListTile(
-                  title: Text(
-                    "${p.username} ${userId != null && userId == p.userId ? "(Você)" : ""}",
-                    style: TextStyle(
-                      fontWeight: userId != null && userId == p.userId
-                          ? FontWeight.bold
-                          : null,
-                    ),
-                  ),
-                  trailing: Text("${p.points}"),
-                  leading: AppBarTitle(
-                    text: "${p.level}",
-                    color: getLevelColor(p.level),
-                  ),
-                ),
+              const ListTile(title: AppBarTitle(text: 'Classificação')),
+              const ListTile(leading: Text('Nível'), trailing: Text('Pontos')),
+              for (var i = 0; i < data.length; i++)
+                if (i < 10 || data[i].userId == userId)
+                  UserClassificationTile(userData: data[i], userId: userId),
             ],
           ),
         );

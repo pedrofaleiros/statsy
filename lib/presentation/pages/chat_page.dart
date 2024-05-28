@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/chat_viewmodel.dart';
@@ -19,6 +17,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final controller = TextEditingController();
+  bool isButtonActive = false;
 
   Future<void> _send() async {
     final viewmodel = context.read<ChatViewmodel>();
@@ -32,8 +31,6 @@ class _ChatPageState extends State<ChatPage> {
     controller.clear();
     await viewmodel.ask(prompt);
   }
-
-  bool isButtonActive = false;
 
   @override
   void initState() {
@@ -104,13 +101,14 @@ class _ChatPageState extends State<ChatPage> {
     return ListView(
       shrinkWrap: true,
       children: [
-        const AppLogo(size: 96),
-        const SizedBox(height: 16),
-        const Align(
-          alignment: Alignment.center,
-          child: AppBarTitle(text: "Como posso te ajudar?"),
+        const AppLogo(size: 64),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          child: Align(
+            alignment: Alignment.center,
+            child: AppBarTitle(text: "Como posso te ajudar?"),
+          ),
         ),
-        const SizedBox(height: 16),
         _hintItem("Me explique permutação."),
         _hintItem("O que é arranjo simples e composto?"),
         _hintItem("Qual a diferença de combinação e permutação?"),
@@ -140,8 +138,9 @@ class _ChatPageState extends State<ChatPage> {
                 vertical: 8,
               ),
               border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(24),
-                  borderSide: BorderSide.none),
+                borderRadius: BorderRadius.circular(24),
+                borderSide: BorderSide.none,
+              ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(24),
                 borderSide: BorderSide.none,
@@ -173,6 +172,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _hintItem(String text) {
     return Card(
+      elevation: 2,
       child: ListTile(
         title: Text(text),
         onTap: () async {

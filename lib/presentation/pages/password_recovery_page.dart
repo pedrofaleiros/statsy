@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/auth_viewmodel.dart';
@@ -32,11 +30,11 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Verifique seu email para redefinir a senha.'),
+            title: const Text('Verifique seu email para redefinir a senha.'),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('Ok'),
+                child: const Text('Ok'),
               ),
             ],
           );
@@ -54,11 +52,11 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
         title: const Text('Recuperar senha'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             _emailTextField(),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             _button(),
           ],
         ),
@@ -70,7 +68,7 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
     return TextField(
       controller: _emailController,
       textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
         border: OutlineInputBorder(),
         focusedBorder: OutlineInputBorder(
@@ -88,7 +86,7 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
     bool loading = context.watch<AuthViewmodel>().isLoading;
 
     if (loading) {
-      return Padding(
+      return const Padding(
         padding: EdgeInsets.all(8.0),
         child: Center(
           child: CircularProgressIndicator(),
@@ -110,8 +108,8 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
                 ? AppColors.white
                 : AppColors.black,
           ),
-          overlayColor: MaterialStatePropertyAll(AppColors.grey),
-          padding: MaterialStatePropertyAll(
+          overlayColor: const MaterialStatePropertyAll(AppColors.grey),
+          padding: const MaterialStatePropertyAll(
             EdgeInsets.symmetric(
               horizontal: 8,
               vertical: 8,
@@ -119,7 +117,7 @@ class _PasswordRecoveryPageState extends State<PasswordRecoveryPage> {
           ),
         ),
         onPressed: _handle,
-        child: Text('Enviar'),
+        child: const Text('Enviar'),
       ),
     );
   }

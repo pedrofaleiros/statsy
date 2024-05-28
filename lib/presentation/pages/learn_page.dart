@@ -25,9 +25,7 @@ class _LearnPageState extends State<LearnPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _load();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) async => await _load());
   }
 
   Future<void> _load() async {
