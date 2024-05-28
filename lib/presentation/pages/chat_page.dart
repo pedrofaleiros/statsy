@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/chat_viewmodel.dart';
 import 'package:statsy/presentation/widgets/app_bar_title.dart';
@@ -30,10 +33,43 @@ class _ChatPageState extends State<ChatPage> {
     await viewmodel.ask(prompt);
   }
 
+  bool isButtonActive = false;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(_updateButtonState);
+  }
+
+  void _updateButtonState() {
+    final isNotEmpty = controller.text.isNotEmpty;
+    if (isNotEmpty != isButtonActive) {
+      setState(() => isButtonActive = isNotEmpty);
+    }
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(_updateButtonState);
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const AppBarTitle(text: 'Chat')),
+      appBar: AppBar(
+        title: const AppBarTitle(text: 'Chat'),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: SvgPicture.asset(
+              'assets/images/gemini_logo.svg',
+              height: 32,
+            ),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -53,13 +89,14 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _messagesList(BuildContext context) {
-    return ListView.builder(
+    final messages = context.watch<ChatViewmodel>().messages;
+    return ListView(
       shrinkWrap: true,
       reverse: true,
-      itemCount: context.watch<ChatViewmodel>().messages.length,
-      itemBuilder: (context, index) => MessageCard(
-        message: context.watch<ChatViewmodel>().messages[index],
-      ),
+      children: [
+        const SizedBox(height: 32),
+        for (var msg in messages) MessageCard(message: msg)
+      ],
     );
   }
 
@@ -82,31 +119,38 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _textField() {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.grey, width: 1),
-        borderRadius: BorderRadius.circular(32),
-      ),
-      margin: const EdgeInsets.only(top: 16),
-      padding: const EdgeInsets.only(left: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: TextField(
-              textInputAction: TextInputAction.newline,
-              maxLines: null,
-              keyboardType: TextInputType.multiline,
-              controller: controller,
-              decoration: const InputDecoration(
-                hintText: 'Faça sua pergunta...',
-                border: InputBorder.none,
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Expanded(
+          child: TextField(
+            textInputAction: TextInputAction.newline,
+            maxLines: 5,
+            minLines: 1,
+            keyboardType: TextInputType.multiline,
+            controller: controller,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Theme.of(context).brightness == Brightness.dark
+                  ? AppColors.black
+                  : AppColors.grey5,
+              hintText: 'Digite uma pergunta',
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 8,
+              ),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(24),
+                  borderSide: BorderSide.none),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(24),
+                borderSide: BorderSide.none,
               ),
             ),
           ),
-          _sendButton(),
-        ],
-      ),
+        ),
+        _sendButton(),
+      ],
     );
   }
 
@@ -116,9 +160,13 @@ class _ChatPageState extends State<ChatPage> {
               context.watch<ChatViewmodel>().isTipping
           ? null
           : () async => await _send(),
-      icon: const Icon(
+      icon: Icon(
         Icons.send_rounded,
-        color: AppColors.orange,
+        color: context.watch<ChatViewmodel>().isLoading ||
+                context.watch<ChatViewmodel>().isTipping ||
+                !isButtonActive
+            ? AppColors.grey3
+            : AppColors.orange,
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:statsy/domain/cache/lessons_cache.dart';
 import 'package:statsy/domain/models/lesson_model.dart';
 import 'package:statsy/domain/repository/lesson_repository.dart';
 import 'package:statsy/domain/usecase/question_usecase.dart';
@@ -17,10 +18,16 @@ class LessonUsecase {
   }
 
   Future<List<LessonModel>> listLessons() async {
+    final cache = LessonsCache.instance.get();
+    if (cache != null) return cache;
+
     final data = await _repository.listLessons();
-    return data.docs
+    final list = data.docs
         .map((doc) => LessonModel.fromMap(doc.data(), doc.id))
         .toList();
+
+    LessonsCache.instance.set(list);
+    return list;
   }
 
   Stream<List<LessonModel>> streamLessonsByLevel(int level) {

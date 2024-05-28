@@ -13,7 +13,7 @@ class AppBarTitle extends StatelessWidget {
       style: TextStyle(
         fontWeight: FontWeight.w500,
         fontFamily: 'OrelegaOne',
-        fontSize: 24,
+        fontSize: 22,
         color: color,
       ),
     );

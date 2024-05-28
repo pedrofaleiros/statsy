@@ -55,6 +55,8 @@ flutter:
     - assets/images/google_icon.svg
     - assets/images/logo.svg
     - assets/images/logo-gray.svg
+    - assets/images/gemini_logo.svg
+    - assets/images/gemini_logo.png
     - .env
 
   fonts:
