@@ -48,16 +48,13 @@ class _LearnPageState extends State<LearnPage> {
       appBar: AppBar(
         title: const AppBarTitle(text: "Aprender"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: RefreshIndicator(
-          onRefresh: () async {
-            setState(() => loading = true);
-            await _load();
-          },
-          child: SafeArea(
-            child: _lessons(),
-          ),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() => loading = true);
+          await _load();
+        },
+        child: SafeArea(
+          child: _lessons(),
         ),
       ),
     );
@@ -68,11 +65,14 @@ class _LearnPageState extends State<LearnPage> {
       return const LinearProgressIndicator(color: AppColors.orange);
     }
 
-    return ListView.builder(
-      itemCount: lessons!.length,
-      itemBuilder: (context, index) => LessonListTile(
-        lesson: lessons![index],
-        userData: userData!,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListView.builder(
+        itemCount: lessons!.length,
+        itemBuilder: (context, index) => LessonListTile(
+          lesson: lessons![index],
+          userData: userData!,
+        ),
       ),
     );
   }

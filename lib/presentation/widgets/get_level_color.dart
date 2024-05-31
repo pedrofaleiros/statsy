@@ -3,16 +3,16 @@ import 'package:statsy/utils/app_colors.dart';
 
 Color getLevelColor(int level) {
   if (level == 1) {
-    return AppColors.green;
+    return AppColors.mint;
   } else if (level == 2) {
-    return AppColors.blue;
+    return AppColors.cyan;
   } else if (level == 3) {
-    return AppColors.purple;
+    return AppColors.blue;
   } else if (level == 4) {
-    return AppColors.orange;
+    return AppColors.indigo;
   } else if (level == 5) {
-    return AppColors.red;
+    return AppColors.purple;
   } else {
-    return AppColors.red;
+    return AppColors.teal;
   }
 }

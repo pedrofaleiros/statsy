@@ -11,6 +11,8 @@ class AppColors {
   static const mint = CupertinoColors.systemMint;
   static const purple = CupertinoColors.systemPurple;
   static const cyan = CupertinoColors.systemCyan;
+  static const indigo = CupertinoColors.systemIndigo;
+  static const teal = CupertinoColors.systemTeal;
 
   static const grey = CupertinoColors.systemGrey;
   static const grey2 = CupertinoColors.systemGrey2;

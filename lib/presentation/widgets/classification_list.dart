@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:statsy/presentation/viewmodel/user_data_viewmodel.dart';
-import 'package:statsy/presentation/widgets/app_bar_title.dart';
 import 'package:statsy/presentation/widgets/user_classification_tile.dart';
 import 'package:statsy/utils/is_waiting.dart';
 
@@ -26,11 +25,13 @@ class ClassificationList extends StatelessWidget {
         return Expanded(
           child: ListView(
             children: [
-              const ListTile(title: AppBarTitle(text: 'Classificação')),
-              const ListTile(leading: Text('Nível'), trailing: Text('Pontos')),
               for (var i = 0; i < data.length; i++)
                 if (i < 10 || data[i].userId == userId)
-                  UserClassificationTile(userData: data[i], userId: userId),
+                  UserClassificationTile(
+                    selected: data[i].userId == userId,
+                    userData: data[i],
+                    userId: userId,
+                  ),
             ],
           ),
         );
