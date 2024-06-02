@@ -28,6 +28,7 @@ class ClassificationList extends StatelessWidget {
               for (var i = 0; i < data.length; i++)
                 if (i < 10 || data[i].userId == userId)
                   UserClassificationTile(
+                    classification: i,
                     selected: data[i].userId == userId,
                     userData: data[i],
                     userId: userId,

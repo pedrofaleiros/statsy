@@ -66,10 +66,6 @@ class _ProgressPageState extends State<ProgressPage> {
                 const UserProgress(),
                 const SizedBox(height: 32),
                 const ListTile(title: AppBarTitle(text: 'Classificação')),
-                const ListTile(
-                  leading: Text('Nível'),
-                  trailing: Text('Pontos'),
-                ),
                 const ClassificationList(),
               ],
             ),

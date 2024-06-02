@@ -10,11 +10,13 @@ class UserClassificationTile extends StatelessWidget {
     required this.userData,
     required this.userId,
     this.selected,
+    required this.classification,
   });
 
   final String userId;
   final UserDataModel userData;
   final bool? selected;
+  final int classification;
 
   Color getSelectedColor(BuildContext context) {
     if (Theme.of(context).brightness == Brightness.dark) {
@@ -38,7 +40,8 @@ class UserClassificationTile extends StatelessWidget {
       leading: Padding(
         padding: const EdgeInsets.only(left: 8),
         child: AppBarTitle(
-          text: "${userData.level}",
+          // text: "${userData.level}",
+          text: "${classification + 1}°",
           color: getLevelColor(userData.level),
         ),
       ),
