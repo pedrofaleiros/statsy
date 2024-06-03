@@ -26,7 +26,7 @@ class QuestionsProgress extends StatelessWidget {
                 minHeight: 12,
                 borderRadius: BorderRadius.circular(100),
                 value: answers.length / questions.length,
-                color: AppColors.green,
+                color: AppColors.mint,
               ),
             ),
           );

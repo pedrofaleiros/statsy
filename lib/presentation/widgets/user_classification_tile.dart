@@ -30,13 +30,6 @@ class UserClassificationTile extends StatelessWidget {
     final isSelected = selected != null && selected!;
     return ListTile(
       tileColor: isSelected ? getSelectedColor(context) : null,
-      title: Text(
-        "${userData.username} ${userId == userData.userId ? "(Você)" : ""}",
-        style: TextStyle(
-          fontWeight: userId == userData.userId ? FontWeight.bold : null,
-        ),
-      ),
-      trailing: Text("${userData.points}"),
       leading: Padding(
         padding: const EdgeInsets.only(left: 8),
         child: AppBarTitle(
@@ -45,6 +38,13 @@ class UserClassificationTile extends StatelessWidget {
           color: getLevelColor(userData.level),
         ),
       ),
+      title: Text(
+        "${userData.username} ${userId == userData.userId ? "(Você)" : ""}",
+        style: TextStyle(
+          fontWeight: userId == userData.userId ? FontWeight.bold : null,
+        ),
+      ),
+      trailing: Text("${userData.points}"),
     );
   }
 }

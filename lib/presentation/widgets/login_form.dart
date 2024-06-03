@@ -194,6 +194,7 @@ class _LoginFormState extends State<LoginForm> {
           ),
         ),
         hintText: 'Digite seu email',
+        suffixIcon: Icon(Icons.email_rounded),
       ),
     );
   }

@@ -105,16 +105,20 @@ class _AnseredQuestionListTileState extends State<AnseredQuestionListTile> {
   List<AlternativeModel> alternatives = [];
 
   Future<void> _loadData() async {
-    await context
-        .read<AnswerViewmodel>()
-        .getAnswer(widget.question.id)
-        .then((data) async {
-      answer = data;
-      alternatives =
-          await context.read<AlternativeViewmodel>().list(widget.question.id);
-    });
-
-    setState(() {});
+    if (mounted) {
+      await context
+          .read<AnswerViewmodel>()
+          .getAnswer(widget.question.id)
+          .then((data) async {
+        if (mounted) {
+          answer = data;
+          alternatives = await context
+              .read<AlternativeViewmodel>()
+              .list(widget.question.id);
+        }
+      });
+    }
+    if (mounted) setState(() {});
   }
 
   String getCorrectId() {

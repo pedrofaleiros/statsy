@@ -64,7 +64,7 @@ class _ProgressPageState extends State<ProgressPage> {
                 ),
                 AnswerProgress(answers: answers ?? []),
                 const UserProgress(),
-                const SizedBox(height: 32),
+                const SizedBox(height: 16),
                 const ListTile(title: AppBarTitle(text: 'Classificação')),
                 const ClassificationList(),
               ],

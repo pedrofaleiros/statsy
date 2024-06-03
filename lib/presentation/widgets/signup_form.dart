@@ -22,11 +22,22 @@ class _LoginFormState extends State<SignUpForm> {
   final _emailController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _password2Controller = TextEditingController();
 
   bool _obscureText = true;
 
+  bool _obscureText2 = true;
+
   Future<void> _signUp() async {
     FocusScope.of(context).unfocus();
+
+    if (_passwordController.text != _password2Controller.text) {
+      showMessageSnackBar(
+        context: context,
+        message: "As senhas devem ser iguais",
+      );
+      return;
+    }
 
     final viewmodel = context.read<AuthViewmodel>();
 
@@ -72,6 +83,8 @@ class _LoginFormState extends State<SignUpForm> {
               _usernameTextField(),
               _box(8),
               _passwordTextField(),
+              _box(8),
+              _password2TextField(),
               _box(16),
               _signUpButton(),
               _box(32),
@@ -176,6 +189,7 @@ class _LoginFormState extends State<SignUpForm> {
           ),
         ),
         hintText: 'Digite seu email',
+        suffixIcon: Icon(Icons.email_rounded),
       ),
     );
   }
@@ -194,18 +208,16 @@ class _LoginFormState extends State<SignUpForm> {
           ),
         ),
         hintText: 'Digite seu nome de usuário',
+        suffixIcon: Icon(Icons.person_rounded),
       ),
     );
   }
 
   Widget _passwordTextField() {
     return TextField(
-      onSubmitted: (value) {
-        if (!context.read<AuthViewmodel>().isLoading) _signUp();
-      },
       obscureText: _obscureText,
       controller: _passwordController,
-      textInputAction: TextInputAction.done,
+      textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         suffixIcon: IconButton(
@@ -224,6 +236,36 @@ class _LoginFormState extends State<SignUpForm> {
           ),
         ),
         hintText: 'Digite sua senha',
+      ),
+    );
+  }
+
+  Widget _password2TextField() {
+    return TextField(
+      onSubmitted: (value) {
+        if (!context.read<AuthViewmodel>().isLoading) _signUp();
+      },
+      obscureText: _obscureText2,
+      controller: _password2Controller,
+      textInputAction: TextInputAction.done,
+      decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        suffixIcon: IconButton(
+          onPressed: () => setState(() => _obscureText2 = !_obscureText2),
+          icon: Icon(
+            _obscureText2
+                ? Icons.visibility_off_rounded
+                : Icons.visibility_rounded,
+          ),
+        ),
+        border: OutlineInputBorder(),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: AppColors.purple,
+            width: 2,
+          ),
+        ),
+        hintText: 'Confirme sua senha',
       ),
     );
   }

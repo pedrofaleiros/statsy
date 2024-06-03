@@ -28,7 +28,7 @@ class AnswerProgress extends StatelessWidget {
                 minHeight: 12,
                 borderRadius: BorderRadius.circular(100),
                 value: correct / answers.length,
-                color: AppColors.blue,
+                color: AppColors.indigo,
               ),
             ),
           );

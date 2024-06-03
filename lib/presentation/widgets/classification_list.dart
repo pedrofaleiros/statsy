@@ -26,7 +26,7 @@ class ClassificationList extends StatelessWidget {
           child: ListView(
             children: [
               for (var i = 0; i < data.length; i++)
-                if (i < 10 || data[i].userId == userId)
+                if ((i < 10 || data[i].userId == userId) && data[i].points != 0)
                   UserClassificationTile(
                     classification: i,
                     selected: data[i].userId == userId,
