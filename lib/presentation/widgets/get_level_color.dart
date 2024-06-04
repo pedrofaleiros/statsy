@@ -13,6 +13,6 @@ Color getLevelColor(int level) {
   } else if (level == 5) {
     return AppColors.purple;
   } else {
-    return AppColors.teal;
+    return AppColors.purple;
   }
 }
