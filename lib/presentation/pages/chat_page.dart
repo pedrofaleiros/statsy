@@ -20,6 +20,14 @@ class _ChatPageState extends State<ChatPage> {
   bool isButtonActive = false;
 
   Future<void> _send() async {
+    if (controller.text.length > 5000) {
+      showMessageSnackBar(
+        context: context,
+        message: "Sua pergunta deve ter no máximo 5000 caracteres",
+      );
+      return;
+    }
+
     final viewmodel = context.read<ChatViewmodel>();
 
     viewmodel.onError = (String? message) {

@@ -35,6 +35,12 @@ class ChatViewmodel extends ChangeNotifier {
     if (prompt == "") {
       return;
     }
+
+    if (prompt.length > 5000) {
+      onError?.call("Sua pergunta deve ter no máximo 5000 caracteres.");
+      return;
+    }
+
     try {
       _setIsLoading(true);
       final history = _history;
