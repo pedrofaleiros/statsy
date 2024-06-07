@@ -26,8 +26,6 @@ class _LoginFormState extends State<SignUpForm> {
 
   bool _obscureText = true;
 
-  bool _obscureText2 = true;
-
   Future<void> _signUp() async {
     FocusScope.of(context).unfocus();
 
@@ -188,7 +186,7 @@ class _LoginFormState extends State<SignUpForm> {
             width: 2,
           ),
         ),
-        hintText: 'Digite seu email',
+        hintText: 'E-mail',
         suffixIcon: Icon(Icons.email_rounded),
       ),
     );
@@ -207,7 +205,7 @@ class _LoginFormState extends State<SignUpForm> {
             width: 2,
           ),
         ),
-        hintText: 'Digite seu nome de usuário',
+        hintText: 'Nome de usuário',
         suffixIcon: Icon(Icons.person_rounded),
       ),
     );
@@ -235,7 +233,7 @@ class _LoginFormState extends State<SignUpForm> {
             width: 2,
           ),
         ),
-        hintText: 'Digite sua senha',
+        hintText: 'Senha',
       ),
     );
   }
@@ -245,15 +243,15 @@ class _LoginFormState extends State<SignUpForm> {
       onSubmitted: (value) {
         if (!context.read<AuthViewmodel>().isLoading) _signUp();
       },
-      obscureText: _obscureText2,
+      obscureText: _obscureText,
       controller: _password2Controller,
       textInputAction: TextInputAction.done,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
         suffixIcon: IconButton(
-          onPressed: () => setState(() => _obscureText2 = !_obscureText2),
+          onPressed: () => setState(() => _obscureText = !_obscureText),
           icon: Icon(
-            _obscureText2
+            _obscureText
                 ? Icons.visibility_off_rounded
                 : Icons.visibility_rounded,
           ),
